@@ -67,6 +67,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
             upload_url: ${{ github.event.inputs.release_upload_url }}
-            asset_path: ${{ env.matrix.arch_DMG_PATH }}
+            asset_path: ${{ env.${{ matrix.arch }}_DMG_PATH }}
             asset_name: ${{ matrix.arch}}-App.dmg
             asset_content_type: application/x-apple-diskimage
