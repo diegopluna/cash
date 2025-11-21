@@ -45,7 +45,7 @@ jobs:
       - name: Build App
         run: |
           echo "Building for ${{ matrix.arch }} Mac OS"
-          bun run tauri build -- ${{matrix.args}} --bundles dmg
+          bun tauri build ${{matrix.args}} --bundles dmg
           # Rename the ${{matrix.arch}} build and store the filename
           cd src-tauri/target/${{matrix.arch}}-apple-darwin/release/bundle/dmg/
           for f in *.dmg; do
