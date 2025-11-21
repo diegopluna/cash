@@ -1,9 +1,14 @@
-name: 'publish'
+name: MacOS (Intel/Apple Silicon) Build
 
 on:
-  push:
-    branches:
-      - release
+  workflow_dispatch:
+    inputs:
+      release_upload_url:
+        description: 'Release upload URL'
+        required: true
+  
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
   publish-tauri:
