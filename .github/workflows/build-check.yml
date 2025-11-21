@@ -91,7 +91,7 @@ jobs:
 
       - name: Build Application
         run: |
-          bun tauri build -- \
+          bun tauri build \
             --target x86_64-unknown-linux-gnu \
             --bundles deb \
             --ci

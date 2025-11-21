@@ -1,11 +1,9 @@
 name: MacOS (Intel/Apple Silicon) Build
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_upload_url:
-        description: 'Release upload URL'
-        required: true
+  push:
+    branches:
+      - release
   
 env:
   CARGO_TERM_COLOR: always
@@ -59,13 +57,23 @@ jobs:
         id: version
         run: echo "version=$(bun -p "require('./package.json').version")"
 
+      - name: Create draft release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: 'App v${{ steps.version.outputs.version }}'
+          tag_name: 'v${{ steps.version.outputs.version }}'
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
       - name: Upload Build to Release
         if: github.event.inputs.release_upload_url != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
-            upload_url: ${{ github.event.inputs.release_upload_url }}
-            asset_path: ${{ env.${{ matrix.arch }}_DMG_PATH }}
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ${{ matrix.arch == 'aarch64' && env.aarch64_DMG_PATH || env.x86_64_DMG_PATH }}
             asset_name: ${{ matrix.arch}}-App.dmg
             asset_content_type: application/x-apple-diskimage
