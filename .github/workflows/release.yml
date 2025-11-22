@@ -1,0 +1,119 @@
+name: Release & Build Tauri
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Force version bump type"
+        required: false
+        type: choice
+        options: ["patch", "minor", "major"]
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate version parity
+        run: |
+          set -euo pipefail
+          pkg=$(node -p "require('./package.json').version")
+          # Run sync script to ensure Cargo.toml matches package.json
+          node scripts/sync-versions.js
+          # Now verify all are in sync
+          cargo=$(sed -n 's/^version = "\(.*\)"/\1/p' src-tauri/Cargo.toml | head -n1)
+          echo "package.json: $pkg"
+          echo "src-tauri/Cargo.toml: $cargo"
+          echo "src-tauri/tauri.conf.json: points to ../package.json"
+          if [ "$pkg" != "$cargo" ]; then
+            echo "Version mismatch detected between package.json and src-tauri/Cargo.toml"
+            exit 1
+          fi
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish-tauri:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            args: --target aarch64-apple-darwin
+          - platform: macos-latest
+            args: --target x86_64-apple-darwin
+          - platform: ubuntu-22.04
+            args: ""
+          - platform: windows-latest
+            args: ""
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: Debug version in tauri.conf.json and Cargo.toml
+        run: |
+          cat src-tauri/tauri.conf.json
+          cat src-tauri/Cargo.toml
+
+      - name: Ensure versions are synchronized
+        shell: bash
+        run: |
+          echo "Using sync-versions.js script to ensure Cargo.toml matches package.json"
+          echo "Note: tauri.conf.json now uses ../package.json as version source"
+          # Sync Cargo.toml with package.json version
+          node scripts/sync-versions.js
+          echo "Updated src-tauri/Cargo.toml:"
+          sed -n '1,40p' src-tauri/Cargo.toml
+
+      - name: Install system deps (Ubuntu)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: ./src-tauri -> target
+
+      - run: bun install
+
+      - name: Build web assets
+        run: bun run vite build
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: src-tauri
+          tagName: ${{ needs.release-please.outputs.tag_name }}
+          releaseName: "Cash ${{ needs.release-please.outputs.tag_name }}"
+          releaseBody: "See the assets below to download and install."
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.platform == 'macos-latest' && matrix.args || '' }}
