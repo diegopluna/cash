@@ -13,7 +13,8 @@
 		"sync-versions": "node scripts/sync-versions.js",
 		"pre-commit": "bun run sync-versions",
 		"format": "prettier --write .",
-		"lint": "prettier --check ."
+		"lint": "prettier --check .",
+		"db:generate": "drizzle-kit generate"
 	},
 	"license": "MIT",
 	"dependencies": {
@@ -22,6 +23,7 @@
 		"@tauri-apps/plugin-opener": "^2",
 		"@tauri-apps/plugin-sql": "~2",
 		"@tauri-apps/plugin-updater": "~2",
+		"drizzle-orm": "^0.44.7",
 		"lucide-svelte": "^0.554.0"
 	},
 	"devDependencies": {
@@ -35,6 +37,7 @@
 		"@types/node": "^24.10.1",
 		"bits-ui": "^2.11.0",
 		"clsx": "^2.1.1",
+		"drizzle-kit": "^0.31.7",
 		"prettier": "^3.6.2",
 		"prettier-plugin-svelte": "^3.4.0",
 		"prettier-plugin-tailwindcss": "^0.7.1",
