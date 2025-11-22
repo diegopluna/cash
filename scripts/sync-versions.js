@@ -1,20 +1,26 @@
-import { readFileSync, writeFileSync } from "node:fs";
-import path from "node:path";
+#!/usr/bin/env node
+
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function syncVersions() {
   try {
     // Read package.json version
     const packageJsonPath = path.join(__dirname, "../package.json");
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
-    const version = packageJson.version as string;
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+    const version = packageJson.version;
 
     console.log(`📦 Package.json version: ${version}`);
 
     // Update Cargo.toml
     const cargoTomlPath = path.join(__dirname, "../src-tauri/Cargo.toml");
-    let cargoContent = readFileSync(cargoTomlPath, "utf-8");
+    let cargoContent = fs.readFileSync(cargoTomlPath, "utf8");
 
-    // Replace version in [package] section (only first occurence)
+    // Replace version in [package] section (only first occurrence)
     const versionRegex = /^version = ".*"/m;
     const newCargoContent = cargoContent.replace(
       versionRegex,
@@ -22,7 +28,7 @@ function syncVersions() {
     );
 
     if (cargoContent !== newCargoContent) {
-      writeFileSync(cargoTomlPath, newCargoContent, "utf-8");
+      fs.writeFileSync(cargoTomlPath, newCargoContent, "utf8");
       console.log(`🦀 Updated Cargo.toml to version: ${version}`);
     } else {
       console.log(`🦀 Cargo.toml already at version: ${version}`);
@@ -33,7 +39,7 @@ function syncVersions() {
       __dirname,
       "../src-tauri/tauri.conf.json"
     );
-    const tauriConfig = JSON.parse(readFileSync(tauriConfigPath, "utf-8"));
+    const tauriConfig = JSON.parse(fs.readFileSync(tauriConfigPath, "utf8"));
 
     if (tauriConfig.version === "../package.json") {
       console.log("⚙️  Tauri config correctly points to package.json");

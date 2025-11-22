@@ -10,7 +10,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "tauri": "tauri",
-    "sync-versions": "bun run scripts/sync-versions.ts",
+    "sync-versions": "node scripts/sync-versions.js",
     "pre-commit": "bun run sync-versions"
   },
   "license": "MIT",
