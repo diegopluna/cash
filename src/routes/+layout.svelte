@@ -4,24 +4,30 @@
 	import { checkForAppUpdates } from '../lib/updater';
 	import { SidebarInset, SidebarProvider } from '$lib/components/ui/sidebar';
 	import AppSidebar from '$lib/components/app-sidebar.svelte';
+	import { QueryClientProvider } from '@tanstack/svelte-query';
+	import { queryClient } from '$lib/tanstack/query';
+	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 
 	let { children } = $props();
 
 	onMount(async () => {
 		// Disable right click context menu
-		// if (document) {
-		// 	document.addEventListener('contextmenu', (e) => e.preventDefault());
-		// }
+		if (document) {
+			document.addEventListener('contextmenu', (e) => e.preventDefault());
+		}
 
 		checkForAppUpdates(false);
 	});
 </script>
 
-<SidebarProvider>
-	<AppSidebar />
-	<SidebarInset>
-		<main>
-			{@render children?.()}
-		</main>
-	</SidebarInset>
-</SidebarProvider>
+<QueryClientProvider client={queryClient}>
+	<SidebarProvider>
+		<AppSidebar />
+		<SidebarInset>
+			<main>
+				{@render children?.()}
+			</main>
+		</SidebarInset>
+	</SidebarProvider>
+	<SvelteQueryDevtools buttonPosition="bottom-right" />
+</QueryClientProvider>
