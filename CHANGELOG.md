@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/diegopluna/cash/compare/cash-v0.2.0...cash-v0.3.0) (2025-11-22)
+
+
+### Features
+
+* implement sidebar component and enhance layout ([11874ae](https://github.com/diegopluna/cash/commit/11874ae4091c1b52a24b0fcfebe6fb8db46eb649))
+
 ## [0.2.0](https://github.com/diegopluna/cash/compare/cash-v0.1.0...cash-v0.2.0) (2025-11-22)
 
 ### Features
