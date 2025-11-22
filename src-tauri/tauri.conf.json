@@ -37,7 +37,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZCRTRGMjdEQzIzMjY2OTcKUldTWFpqTENmZkxrYXdxY0FIcWZwazBLZDk1d2xCd1I1YVVOMnhOamw4N2JuZVNoc3hvSElPK0kK",
       "endpoints": [
-        "https://github.com/diegopluna/cash/releases/download/latest.json"
+        "https://github.com/diegopluna/cash/releases/latest/download/latest.json"
       ]
     }
   }
