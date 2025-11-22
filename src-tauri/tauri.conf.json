@@ -30,6 +30,15 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZCRTRGMjdEQzIzMjY2OTcKUldTWFpqTENmZkxrYXdxY0FIcWZwazBLZDk1d2xCd1I1YVVOMnhOamw4N2JuZVNoc3hvSElPK0kK",
+      "endpoints": [
+        "https://github.com/diegopluna/cash/releases/download/latest.json"
+      ]
+    }
   }
 }
