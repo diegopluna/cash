@@ -188,8 +188,10 @@
 	--tracking-widest: calc(var(--tracking-normal) + 0.1em);
 }
 
-body {
+html, body {
 	letter-spacing: var(--tracking-normal);
+	overscroll-behavior: none;
+	--webkit-overscroll-behavior: touch;
 }
 
 @layer base {
@@ -197,6 +199,6 @@ body {
 		@apply border-border outline-ring/50;
 	}
 	body {
-		@apply bg-background text-foreground select-none;
+		@apply bg-background text-foreground select-none overscroll-none;
 	}
 }
