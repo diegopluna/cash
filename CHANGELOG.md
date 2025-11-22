@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.0](https://github.com/diegopluna/cash/compare/cash-v0.3.0...cash-v0.4.0) (2025-11-22)
+
+
+### Features
+
+* add Drizzle ORM integration and database schema setup ([32cdf08](https://github.com/diegopluna/cash/commit/32cdf08a889911221d0c3ef984a0dcbdd4f6b1f4))
+* integrate SQL plugin and implement database migration functionality ([4f4087f](https://github.com/diegopluna/cash/commit/4f4087fb3d736261a2eca2c85c4e87959b628f81))
+* integrate TanStack Query for data fetching and state management ([5f93f74](https://github.com/diegopluna/cash/commit/5f93f74b3cad0ada9390accde0a74d3b8b9d8367))
+
 ## [0.3.0](https://github.com/diegopluna/cash/compare/cash-v0.2.0...cash-v0.3.0) (2025-11-22)
 
 
