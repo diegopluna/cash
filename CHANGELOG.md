@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/diegopluna/cash/compare/cash-v0.1.0...cash-v0.2.0) (2025-11-22)
+
+
+### Features
+
+* add auto-update capabilites ([d78b3ff](https://github.com/diegopluna/cash/commit/d78b3ffa32ab6f807e8abef70bffdc0c7f7a1bb4))
+
+
+### Bug Fixes
+
+* update checkForAppUpdates function parameter type to boolean ([1bc1a6f](https://github.com/diegopluna/cash/commit/1bc1a6f7a82a54bb24025e00658dc2b9feb51e8c))
+
 ## [0.1.0](https://github.com/diegopluna/cash/compare/cash-v0.0.1...cash-v0.1.0) (2025-11-22)
 
 
