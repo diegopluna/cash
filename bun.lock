@@ -24,6 +24,7 @@
         "@sveltejs/kit": "^2.9.0",
         "@sveltejs/vite-plugin-svelte": "^5.0.0",
         "@tailwindcss/vite": "^4.1.17",
+        "@tanstack/table-core": "^8.21.3",
         "@tauri-apps/cli": "^2",
         "@types/node": "^24.10.1",
         "bits-ui": "^2.11.0",
@@ -229,6 +230,8 @@
     "@tanstack/svelte-query": ["@tanstack/svelte-query@6.0.8", "", { "dependencies": { "@tanstack/query-core": "5.90.10" }, "peerDependencies": { "svelte": "^5.25.0" } }, "sha512-629mKyv09IA0W5PnRCG7xiS893aIZ5N+PvpaAJIxwepuEF9pyj6mxNSrTnG6vQTp7xhp2LH9Qi+LE/IJ36FzvA=="],
 
     "@tanstack/svelte-query-devtools": ["@tanstack/svelte-query-devtools@6.0.1", "", { "dependencies": { "@tanstack/query-devtools": "5.91.0", "esm-env": "^1.2.1" }, "peerDependencies": { "@tanstack/svelte-query": "^6.0.8", "svelte": "^5.25.0" } }, "sha512-fXsdKbie2+RahsJnGJ5YMOg7uyqpoBetrP7eHHeY6v4qSpFPHiWicj+2zDim4cMP/ww6zwVox9Xpw6emmQpxLw=="],
+
+    "@tanstack/table-core": ["@tanstack/table-core@8.21.3", "", {}, "sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg=="],
 
     "@tauri-apps/api": ["@tauri-apps/api@2.9.0", "", {}, "sha512-qD5tMjh7utwBk9/5PrTA/aGr3i5QaJ/Mlt7p8NilQ45WgbifUNPyKWsA63iQ8YfQq6R8ajMapU+/Q8nMcPRLNw=="],
 

@@ -27,13 +27,13 @@
 					AI Assistant
 				</Button>
 			</div>
-			<div>
-				<ul>
-					{#each query.data as category (category.id)}
-						<li>{category.name}</li>
-					{/each}
-				</ul>
-			</div>
 		</header>
+		<div>
+			<ul>
+				{#each query.data as category (category.id)}
+					<li>{category.name}</li>
+				{/each}
+			</ul>
+		</div>
 	</div>
 </div>
