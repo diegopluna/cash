@@ -12,11 +12,13 @@
 
 	onMount(async () => {
 		// Disable right click context menu
-		if (document) {
-			document.addEventListener('contextmenu', (e) => e.preventDefault());
-		}
+		if (import.meta.env.PROD) {
+			if (document) {
+				document.addEventListener('contextmenu', (e) => e.preventDefault());
+			}
 
-		checkForAppUpdates(false);
+			checkForAppUpdates(false);
+		}
 	});
 </script>
 

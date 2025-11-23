@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { categoriesCollection } from '$lib/tanstack/db/categories-collection';
-	import { useLiveQuery } from '@tanstack/svelte-db';
 	import { Sparkles } from 'lucide-svelte';
-
-	const query = useLiveQuery((q) => q.from({ categories: categoriesCollection }));
 </script>
 
 <div class="min-h-screen bg-background font-sans text-foreground selection:bg-primary/20">
@@ -28,12 +24,5 @@
 				</Button>
 			</div>
 		</header>
-		<div>
-			<ul>
-				{#each query.data as category (category.id)}
-					<li>{category.name}</li>
-				{/each}
-			</ul>
-		</div>
 	</div>
 </div>
