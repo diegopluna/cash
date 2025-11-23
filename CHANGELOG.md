@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/diegopluna/cash/compare/cash-v0.5.0...cash-v0.6.0) (2025-11-23)
+
+
+### Features
+
+* add categories page with data table integration ([5f3f5b5](https://github.com/diegopluna/cash/commit/5f3f5b5c7c7e3da358495c6d70bc998708db2a9f))
+* enhance data grid components and update dependencies ([9932b67](https://github.com/diegopluna/cash/commit/9932b679d2f8789045b6d4f42c5c8e10ba38e27b))
+* integrate TanStack Table components for enhanced data display ([5a8b040](https://github.com/diegopluna/cash/commit/5a8b0409a370a7307147f9d45a16d0ca371f27db))
+* update dependencies and enhance Tauri configuration ([2c78cf4](https://github.com/diegopluna/cash/commit/2c78cf43fc837148bb7f699ff5877214112a8720))
+
+
+### Bug Fixes
+
+* update window dimensions in tauri configuration ([604cf6f](https://github.com/diegopluna/cash/commit/604cf6f4ffd2d192c62ed209ad6b86612f222150))
+
 ## [0.5.0](https://github.com/diegopluna/cash/compare/cash-v0.4.0...cash-v0.5.0) (2025-11-23)
 
 
