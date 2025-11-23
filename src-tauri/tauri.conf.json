@@ -36,7 +36,9 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": ["migrations/*"],
+    "resources": [
+      "migrations/*"
+    ],
     "macOS": {
       "hardenedRuntime": true,
       "entitlements": null,
@@ -52,7 +54,9 @@
       ]
     },
     "sql": {
-      "preload": ["sqlite:database.db"]
+      "preload": [
+        "sqlite:database.db"
+      ]
     }
   }
 }
