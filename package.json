@@ -15,7 +15,7 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check .",
 		"db:generate": "drizzle-kit generate",
-		"db:seed": "tsx src/db/seed.ts"
+		"db:seed": "bun src/lib/db/seed.ts"
 	},
 	"license": "MIT",
 	"dependencies": {
