@@ -1,8 +1,7 @@
 <script lang="ts" generics="TData extends object, TValue">
 	import type { Column } from '@tanstack/table-core';
-	import { getContext, type Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { DataGridContextProps } from './types';
 	import { cn } from '$lib/utils';
 	import { Button } from '../ui/button';
 	import {
@@ -31,6 +30,7 @@
 		DropdownMenuTrigger
 	} from '../ui/dropdown-menu';
 	import DropdownMenuSubContent from '../ui/dropdown-menu/dropdown-menu-sub-content.svelte';
+	import { dataGridContext } from './context';
 
 	interface DataGridColumnHeaderProps<TData, TValue> extends HTMLAttributes<HTMLDivElement> {
 		column: Column<TData, TValue>;
@@ -50,12 +50,7 @@
 		visibility = false
 	}: DataGridColumnHeaderProps<TData, TValue> = $props();
 
-	const {
-		isLoading,
-		table,
-		props: dataGridProps,
-		recordCount
-	} = getContext<DataGridContextProps<TData>>('data-grid');
+	const { isLoading, table, props: dataGridProps, recordCount } = dataGridContext.get();
 
 	const moveColumn = (direction: 'left' | 'right') => {
 		const currentOrder = [...table.getState().columnOrder]; // Get current column order

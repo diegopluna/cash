@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { getContext, type Snippet } from 'svelte';
-	import type { DataGridContextProps } from '../types';
+	import { type Snippet } from 'svelte';
+	import { dataGridContext } from '../context';
 
 	let { children }: { children: Snippet } = $props();
 
-	const { props: dataGridProps } = getContext<DataGridContextProps<any>>('data-grid');
+	const { props: dataGridProps } = dataGridContext.get();
 </script>
 
 <tbody

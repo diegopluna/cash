@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { DataGridContextProps } from '../types';
+	import { dataGridContext } from '../context';
 
-	const { table, props } = getContext<DataGridContextProps<any>>('data-grid');
+	const { table, props } = dataGridContext.get();
 	const totalColumns = $derived(table.getAllColumns().length);
 </script>
 

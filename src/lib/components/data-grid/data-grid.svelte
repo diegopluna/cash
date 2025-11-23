@@ -1,7 +1,7 @@
 <script lang="ts" generics="TData extends object">
 	import type { Table } from '@tanstack/table-core';
-	import { type DataGridContextProps, type DataGridProps } from './types';
-	import { setContext } from 'svelte';
+	import { type DataGridProps } from './types';
+	import { dataGridContext } from './context';
 
 	let { children, table, ...props }: DataGridProps<TData> & { table: Table<TData> } = $props();
 
@@ -53,7 +53,7 @@
 		throw new Error('DataGrid requires a "table" prop');
 	}
 
-	setContext<DataGridContextProps<TData>>('data-grid', {
+	dataGridContext.set({
 		props: mergedProps,
 		table,
 		recordCount: mergedProps.recordCount,

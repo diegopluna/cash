@@ -1,12 +1,12 @@
 <script lang="ts" generics="TData extends object">
 	import type { HeaderGroup } from '@tanstack/table-core';
-	import { getContext, type Snippet } from 'svelte';
-	import type { DataGridContextProps } from '../types';
+	import { type Snippet } from 'svelte';
 	import { cn } from '$lib/utils';
+	import { dataGridContext } from '../context';
 
 	let { children, headerGroup }: { children: Snippet; headerGroup: HeaderGroup<TData> } = $props();
 
-	const { props: dataGridProps } = getContext<DataGridContextProps<TData>>('data-grid');
+	const { props: dataGridProps } = dataGridContext.get();
 </script>
 
 <tr

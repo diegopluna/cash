@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { DataGridContextProps } from '../types';
+	import { dataGridContext } from '../context';
 
-	const { props } = getContext<DataGridContextProps<any>>('data-grid');
+	const { props } = dataGridContext.get();
 </script>
 
 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">

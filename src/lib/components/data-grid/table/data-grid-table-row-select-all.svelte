@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { DataGridContextProps } from '../types';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { cn } from '$lib/utils';
 	import { getCheckBoxSize } from './variants';
+	import { dataGridContext } from '../context';
 
 	let { size }: { size?: 'sm' | 'md' | 'lg' } = $props();
 
-	const { table, recordCount, isLoading } = getContext<DataGridContextProps<any>>('data-grid');
+	const { table, recordCount, isLoading } = dataGridContext.get();
 </script>
 
 <Checkbox

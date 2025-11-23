@@ -1,6 +1,4 @@
 <script lang="ts" generics="TData extends object">
-	import { getContext } from 'svelte';
-	import type { DataGridContextProps } from '../types';
 	import DataGridTableBase from './data-grid-table-base.svelte';
 	import DataGridTableHead from './data-grid-table-head.svelte';
 	import DataGridTableHeadRowCell from './data-grid-table-head-row-cell.svelte';
@@ -15,8 +13,9 @@
 	import DataGridTableBodyRowCell from './data-grid-table-body-row-cell.svelte';
 	import DataGridTableBodyRowExpanded from './data-grid-table-body-row-expanded.svelte';
 	import DataGridTableEmpty from './data-grid-table-empty.svelte';
+	import { dataGridContext } from '../context';
 
-	const { table, isLoading, props } = getContext<DataGridContextProps<TData>>('data-grid');
+	const { table, isLoading, props } = dataGridContext.get();
 	const pagination = $derived(table.getState().pagination);
 </script>
 

@@ -1,13 +1,13 @@
 <script lang="ts" generics="TData extends object">
 	import type { Column } from '@tanstack/table-core';
-	import { getContext, type Snippet } from 'svelte';
-	import type { DataGridContextProps } from '../types';
+	import { type Snippet } from 'svelte';
 	import { bodyCellSpacingVariants } from './variants';
 	import { cn } from '$lib/utils';
+	import { dataGridContext } from '../context';
 
 	let { children, column }: { children: Snippet; column: Column<TData> } = $props();
 
-	const { props: dataGridProps, table } = getContext<DataGridContextProps<TData>>('data-grid');
+	const { props: dataGridProps, table } = dataGridContext.get();
 
 	const bodyCellSpacing = bodyCellSpacingVariants({
 		size: dataGridProps.tableLayout?.dense ? 'dense' : 'default'

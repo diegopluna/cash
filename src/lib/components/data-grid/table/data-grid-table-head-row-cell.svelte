@@ -1,9 +1,9 @@
 <script lang="ts" generics="TData extends object">
-	import { getContext, type Snippet } from 'svelte';
-	import type { DataGridContextProps } from '../types';
+	import { type Snippet } from 'svelte';
 	import type { Header } from '@tanstack/table-core';
 	import { getPinningStyles, headerCellSpacingVariants } from './variants';
 	import { cn } from '$lib/utils';
+	import { dataGridContext } from '../context';
 
 	let {
 		children,
@@ -17,7 +17,7 @@
 		dndStyle?: string;
 	} = $props();
 
-	const { props: dataGridProps } = getContext<DataGridContextProps<TData>>('data-grid');
+	const { props: dataGridProps } = dataGridContext.get();
 	const { column } = header;
 	const isPinned = $derived(column.getIsPinned());
 	const isLastLeftPinned = $derived(isPinned === 'left' && column.getIsLastColumn('left'));

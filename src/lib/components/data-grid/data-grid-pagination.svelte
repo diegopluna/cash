@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { getContext, type Snippet } from 'svelte';
-	import type { DataGridContextProps } from './types';
+	import { type Snippet } from 'svelte';
 	import { Skeleton } from '../ui/skeleton';
 	import { cn } from '$lib/utils';
 	import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select';
 	import { Button } from '../ui/button';
 	import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-svelte';
+	import { dataGridContext } from './context';
 
 	interface DataGridPaginationProps {
 		sizes?: number[];
@@ -26,7 +26,7 @@
 
 	let props: DataGridPaginationProps = $props();
 
-	const { table, recordCount, isLoading } = getContext<DataGridContextProps<any>>('data-grid');
+	const { table, recordCount, isLoading } = dataGridContext.get();
 
 	const defaultProps: Partial<DataGridPaginationProps> = {
 		sizes: [5, 10, 25, 50, 100],
