@@ -11,7 +11,6 @@ use std::path::PathBuf;
 use tauri::Manager;
 use tauri::{command, AppHandle};
 
-
 #[derive(Debug, Deserialize)]
 pub struct SqlQuery {
     pub sql: String,
@@ -43,7 +42,7 @@ pub async fn run_sql(app: AppHandle, query: SqlQuery) -> Result<Vec<SqlRow>, Str
         .await
         .map_err(|e| format!("Query failed: {}", e))?;
 
-        let result = rows
+    let result = rows
         .iter()
         .map(|row| {
             let columns = row

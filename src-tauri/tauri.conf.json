@@ -12,9 +12,14 @@
   "app": {
     "windows": [
       {
-        "title": "cash",
-        "width": 1600,
-        "height": 1200
+        "title": "Cash",
+        "width": 1280,
+        "height": 900,
+        "resizable": true,
+        "fullscreen": false,
+        "minWidth": 1200,
+        "minHeight": 800,
+        "hiddenTitle": true
       }
     ],
     "security": {
@@ -31,6 +36,12 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "resources": ["migrations/*"],
+    "macOS": {
+      "hardenedRuntime": true,
+      "entitlements": null,
+      "providerShortName": null
+    },
     "createUpdaterArtifacts": true
   },
   "plugins": {
@@ -39,6 +50,9 @@
       "endpoints": [
         "https://github.com/diegopluna/cash/releases/latest/download/latest.json"
       ]
+    },
+    "sql": {
+      "preload": ["sqlite:database.db"]
     }
   }
 }

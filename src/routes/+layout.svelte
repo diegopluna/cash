@@ -7,6 +7,8 @@
 	import { QueryClientProvider } from '@tanstack/svelte-query';
 	import { queryClient } from '$lib/tanstack/query';
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
+	import { initStore } from '$lib/stores/init';
+	import { seed } from '$lib/db/seed';
 
 	let { children } = $props();
 
@@ -18,6 +20,15 @@
 			}
 
 			checkForAppUpdates(false);
+		}
+
+		// Start store
+		await initStore.start();
+
+		const seeded = initStore.state.seeded;
+		if (!seeded) {
+			await seed();
+			initStore.state.seeded = true;
 		}
 	});
 </script>

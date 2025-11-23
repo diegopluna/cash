@@ -1,5 +1,4 @@
 <script lang="ts">
-	import DataTable from '$lib/components/data-table.svelte';
 	import { categoriesCollection } from '$lib/tanstack/db/categories-collection';
 	import { useLiveQuery } from '@tanstack/svelte-db';
 	import { columns, type Category } from './columns';
@@ -83,7 +82,6 @@
 				<h1 class="text-3xl font-bold tracking-tight text-foreground">Categories</h1>
 			</div>
 		</header>
-		<DataTable data={query.data} {columns} />
 		<DataGrid {table} recordCount={query.data.length || 0} tableLayout={{ cellBorder: true }}>
 			<div class="w-full space-y-2.5">
 				<DataGridContainer>
