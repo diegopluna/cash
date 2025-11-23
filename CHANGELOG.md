@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.0](https://github.com/diegopluna/cash/compare/cash-v0.4.0...cash-v0.5.0) (2025-11-23)
+
+
+### Features
+
+* implement database schema for financial management ([02ceff7](https://github.com/diegopluna/cash/commit/02ceff7d77a43ef867977f6bf0055d5097f4cad3))
+* update database seeding and implement categories collection ([06d951d](https://github.com/diegopluna/cash/commit/06d951d204eeed5df7d7332eccba239299025813))
+
+
+### Bug Fixes
+
+* update updater endpoint in tauri configuration ([44d5c3b](https://github.com/diegopluna/cash/commit/44d5c3b5377fb1e51d8cbc6d5fb0ba6a8fc12c87))
+
 ## [0.4.0](https://github.com/diegopluna/cash/compare/cash-v0.3.0...cash-v0.4.0) (2025-11-22)
 
 
