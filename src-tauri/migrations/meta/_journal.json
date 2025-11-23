@@ -8,6 +8,13 @@
       "when": 1763847402352,
       "tag": "0000_bent_living_mummy",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1763856554543,
+      "tag": "0001_third_energizer",
+      "breakpoints": true
     }
   ]
 }
