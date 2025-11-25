@@ -1,11 +1,9 @@
 import type { ColumnDef } from '@tanstack/table-core';
-import type { categories } from '$lib/db/schema';
 import { renderComponent } from '$lib/components/ui/data-table';
 import DataTableActions from '$lib/components/data-table/data-table-actions.svelte';
 import DataTableColumnHeader from '$lib/components/data-table/data-table-column-header.svelte';
 import { Checkbox } from '$lib/components/ui/checkbox';
-
-export type Category = typeof categories.$inferSelect;
+import type { Category } from './schema';
 
 export const columns: ColumnDef<Category>[] = [
 	{
