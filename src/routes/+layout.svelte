@@ -9,6 +9,7 @@
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 	import { initStore } from '$lib/stores/init';
 	import { seed } from '$lib/db/seed';
+	import { Toaster } from '$lib/components/ui/sonner';
 
 	let { children } = $props();
 
@@ -43,4 +44,5 @@
 		</SidebarInset>
 	</SidebarProvider>
 	<SvelteQueryDevtools buttonPosition="bottom-right" />
+	<Toaster />
 </QueryClientProvider>

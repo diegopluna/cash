@@ -1,78 +1,10 @@
 <script lang="ts">
 	import { categoriesCollection } from '$lib/tanstack/db/categories-collection';
 	import { useLiveQuery } from '@tanstack/svelte-db';
-	import { columns, type Category } from './columns';
-	import { createSvelteTable } from '$lib/components/ui/data-table';
-	import {
-		getCoreRowModel,
-		getFilteredRowModel,
-		getPaginationRowModel,
-		getSortedRowModel,
-		type PaginationState,
-		type ColumnOrderState,
-		type SortingState
-	} from '@tanstack/table-core';
-	import DataGrid from '$lib/components/data-grid/data-grid.svelte';
-	import DataGridContainer from '$lib/components/data-grid/data-grid-container.svelte';
-	import { ScrollArea } from '$lib/components/ui/scroll-area';
-	import { DataGridTable } from '$lib/components/data-grid/table';
-	import DataGridPagination from '$lib/components/data-grid/data-grid-pagination.svelte';
+	import { columns } from './columns';
+	import DataTable from '$lib/components/data-table/data-table.svelte';
 
 	const query = useLiveQuery((q) => q.from({ categories: categoriesCollection }));
-
-	let pagination = $state<PaginationState>({
-		pageIndex: 0,
-		pageSize: 10
-	});
-	let sorting = $state<SortingState>([]);
-	let columnOrder = $state<ColumnOrderState>([]);
-
-	const table = createSvelteTable({
-		columns,
-		get data() {
-			return query.data;
-		},
-		get pageCount() {
-			return Math.ceil((query.data.length || 0) / pagination.pageSize);
-		},
-		getRowId: (row: Category) => row.id.toString(),
-		state: {
-			get pagination() {
-				return pagination;
-			},
-			get sorting() {
-				return sorting;
-			},
-			get columnOrder() {
-				return columnOrder;
-			}
-		},
-		onSortingChange: (updater) => {
-			if (typeof updater === 'function') {
-				sorting = updater(sorting);
-			} else {
-				sorting = updater;
-			}
-		},
-		onColumnOrderChange: (updater) => {
-			if (typeof updater === 'function') {
-				columnOrder = updater(columnOrder);
-			} else {
-				columnOrder = updater;
-			}
-		},
-		onPaginationChange: (updater) => {
-			if (typeof updater === 'function') {
-				pagination = updater(pagination);
-			} else {
-				pagination = updater;
-			}
-		},
-		getCoreRowModel: getCoreRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		getSortedRowModel: getSortedRowModel()
-	});
 </script>
 
 <div class="min-h-screen bg-background font-sans text-foreground selection:bg-primary/20">
@@ -82,15 +14,21 @@
 				<h1 class="text-3xl font-bold tracking-tight text-foreground">Categories</h1>
 			</div>
 		</header>
-		<DataGrid {table} recordCount={query.data.length || 0} tableLayout={{ cellBorder: true }}>
-			<div class="w-full space-y-2.5">
-				<DataGridContainer>
-					<ScrollArea>
-						<DataGridTable />
-					</ScrollArea>
-				</DataGridContainer>
-				<DataGridPagination />
-			</div>
-		</DataGrid>
+		<DataTable
+			data={query.data}
+			{columns}
+			searchColumnId="name"
+			filterPlaceholder="Search categories..."
+			facetedFilters={[
+				{
+					columnId: 'type',
+					title: 'Type',
+					options: [
+						{ label: 'Category', value: 'category' },
+						{ label: 'Subcategory', value: 'subcategory' }
+					]
+				}
+			]}
+		/>
 	</div>
 </div>
