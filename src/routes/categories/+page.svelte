@@ -3,6 +3,8 @@
 	import { useLiveQuery } from '@tanstack/svelte-db';
 	import { columns } from './columns';
 	import DataTable from '$lib/components/data-table/data-table.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import { Plus } from 'lucide-svelte';
 
 	const query = useLiveQuery((q) => q.from({ categories: categoriesCollection }));
 </script>
@@ -13,6 +15,10 @@
 			<div>
 				<h1 class="text-3xl font-bold tracking-tight text-foreground">Categories</h1>
 			</div>
+			<Button>
+				<Plus />
+				Add Category
+			</Button>
 		</header>
 		<DataTable
 			data={query.data}
