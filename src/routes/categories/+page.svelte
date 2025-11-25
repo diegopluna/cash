@@ -30,8 +30,8 @@
 					columnId: 'type',
 					title: 'Type',
 					options: [
-						{ label: 'Category', value: 'category' },
-						{ label: 'Subcategory', value: 'subcategory' }
+						{ label: 'Expense', value: 'expense' },
+						{ label: 'Income', value: 'income' }
 					]
 				}
 			]}
