@@ -14,11 +14,11 @@ import transactionSplits from './transaction-splits';
 const categories = sqliteTable(
 	'categories',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
+		id: text('id').primaryKey(),
 
 		name: text('name').notNull(),
 		type: text('type', { enum: categoryTypeEnum }).notNull().default('expense'),
-		parentId: integer('parent_id').references((): AnySQLiteColumn => categories.id, {
+		parentId: text('parent_id').references((): AnySQLiteColumn => categories.id, {
 			onDelete: 'set null'
 		}),
 

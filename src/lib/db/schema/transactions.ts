@@ -11,9 +11,9 @@ import transactionTags from './transaction-tags';
 const transactions = sqliteTable(
 	'transactions',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
+		id: text('id').primaryKey(),
 
-		accountId: integer('account_id')
+		accountId: text('account_id')
 			.notNull()
 			.references(() => accounts.id, { onDelete: 'cascade' }),
 
@@ -31,7 +31,7 @@ const transactions = sqliteTable(
 		date: integer('date', { mode: 'timestamp_ms' }).notNull(),
 		postedAt: integer('posted_at', { mode: 'timestamp_ms' }),
 
-		categoryId: integer('category_id').references(() => categories.id, {
+		categoryId: text('category_id').references(() => categories.id, {
 			onDelete: 'set null'
 		}),
 
@@ -57,7 +57,7 @@ const transactions = sqliteTable(
 		})
 			.notNull()
 			.default(false),
-		recurrenceRuleId: integer('recurrence_rule_id').references(() => recurrenceRules.id, {
+		recurrenceRuleId: text('recurrence_rule_id').references(() => recurrenceRules.id, {
 			onDelete: 'set null'
 		}),
 

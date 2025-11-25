@@ -1,4 +1,4 @@
-import { integer, primaryKey, sqliteTable } from 'drizzle-orm/sqlite-core';
+import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import transactions from './transactions';
 import tags from './tags';
 import { relations } from 'drizzle-orm';
@@ -7,10 +7,10 @@ import { relations } from 'drizzle-orm';
 const transactionTags = sqliteTable(
 	'transaction_tags',
 	{
-		transactionId: integer('transaction_id')
+		transactionId: text('transaction_id')
 			.notNull()
 			.references(() => transactions.id, { onDelete: 'cascade' }),
-		tagId: integer('tag_id')
+		tagId: text('tag_id')
 			.notNull()
 			.references(() => tags.id, { onDelete: 'cascade' })
 	},

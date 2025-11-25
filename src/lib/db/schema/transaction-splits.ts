@@ -7,11 +7,11 @@ import { relations } from 'drizzle-orm';
 const transactionSplits = sqliteTable(
 	'transaction_splits',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
-		transactionId: integer('transaction_id')
+		id: text('id').primaryKey(),
+		transactionId: text('transaction_id')
 			.notNull()
 			.references(() => transactions.id, { onDelete: 'cascade' }),
-		categoryId: integer('category_id').references(() => categories.id, {
+		categoryId: text('category_id').references(() => categories.id, {
 			onDelete: 'set null'
 		}),
 		amountCents: integer('amount_cents').notNull(),

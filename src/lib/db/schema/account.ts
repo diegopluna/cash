@@ -7,8 +7,8 @@ import transactions from './transactions';
 const accounts = sqliteTable(
 	'accounts',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
-		institutionId: integer('institution_id').references(() => institutions.id, {
+		id: text('id').primaryKey(),
+		institutionId: text('institution_id').references(() => institutions.id, {
 			onDelete: 'set null'
 		}),
 		name: text('name').notNull(),

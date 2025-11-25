@@ -3,12 +3,14 @@ import db from './database';
 import { accounts, categories, institutions, transactions } from './schema';
 import appSettings from './schema/settings';
 import * as schema from './schema';
+import { uuidv7 } from 'uuidv7';
 
 export async function seed() {
 	// @ts-ignore
 	await reset(db, schema);
 	// 1) App settings (single row)
 	await db.insert(appSettings).values({
+		id: '1',
 		currencyCode: 'BRL',
 		locale: 'pt-BR'
 	});
@@ -18,18 +20,21 @@ export async function seed() {
 		.insert(institutions)
 		.values([
 			{
+				id: uuidv7(),
 				name: 'Banco do Brasil',
 				type: 'bank',
 				country: 'BR',
 				isbp: '00000000'
 			},
 			{
+				id: uuidv7(),
 				name: 'Itaú',
 				type: 'bank',
 				country: 'BR',
 				isbp: '60701190'
 			},
 			{
+				id: uuidv7(),
 				name: 'Nubank',
 				type: 'fintech',
 				country: 'BR',
@@ -44,6 +49,7 @@ export async function seed() {
 	const [mainAccount] = await db
 		.insert(accounts)
 		.values({
+			id: uuidv7(),
 			institutionId: nubank?.id,
 			name: 'Conta Principal',
 			type: 'checking',
@@ -60,16 +66,19 @@ export async function seed() {
 		.insert(categories)
 		.values([
 			{
+				id: uuidv7(),
 				name: 'Moradia',
 				type: 'expense',
 				isSystem: true
 			},
 			{
+				id: uuidv7(),
 				name: 'Alimentação',
 				type: 'expense',
 				isSystem: true
 			},
 			{
+				id: uuidv7(),
 				name: 'Transporte',
 				type: 'expense',
 				isSystem: true
@@ -82,12 +91,14 @@ export async function seed() {
 	if (alimentacao) {
 		await db.insert(categories).values([
 			{
+				id: uuidv7(),
 				name: 'Supermercado',
 				type: 'expense',
 				parentId: alimentacao.id,
 				isSystem: true
 			},
 			{
+				id: uuidv7(),
 				name: 'Restaurantes',
 				type: 'expense',
 				parentId: alimentacao.id,
@@ -100,6 +111,7 @@ export async function seed() {
 	const [salaryCategory] = await db
 		.insert(categories)
 		.values({
+			id: uuidv7(),
 			name: 'Salário',
 			type: 'income',
 			isSystem: true
@@ -108,6 +120,7 @@ export async function seed() {
 
 	// 5) Example first transaction: a salary income
 	await db.insert(transactions).values({
+		id: uuidv7(),
 		accountId: mainAccount.id,
 		type: 'income',
 		status: 'cleared',

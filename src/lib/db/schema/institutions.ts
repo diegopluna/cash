@@ -6,7 +6,7 @@ import accounts from './account';
 const institutions = sqliteTable(
 	'institutions',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
+		id: text('id').primaryKey(),
 		name: text('name').notNull(),
 		type: text('type', { enum: institutionTypeEnum }).notNull().default('bank'),
 		slug: text('slug'),

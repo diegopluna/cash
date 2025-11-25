@@ -7,7 +7,7 @@ import transactions from './transactions';
 const recurrenceRules = sqliteTable(
 	'recurrence_rules',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
+		id: text('id').primaryKey(),
 
 		frequency: text('frequency', { enum: frequencyEnum }).notNull().default('monthly'),
 		interval: integer('interval').notNull().default(1), // every N periods

@@ -15,6 +15,13 @@
       "when": 1763856554543,
       "tag": "0001_third_energizer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1764081273784,
+      "tag": "0002_brave_inertia",
+      "breakpoints": true
     }
   ]
 }

@@ -5,7 +5,7 @@ import transactionTags from './transaction-tags';
 const tags = sqliteTable(
 	'tags',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
+		id: text('id').primaryKey(),
 
 		name: text('name').notNull(),
 		color: text('color'),
