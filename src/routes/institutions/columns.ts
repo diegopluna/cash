@@ -7,6 +7,7 @@ import DataTableActions from '$lib/components/data-table/data-table-actions.svel
 import CellBadge from './cell-badge.svelte';
 import CellCountry from './cell-country.svelte';
 import CellAccountCount from './cell-account-count.svelte';
+import CellName from './cell-name.svelte';
 
 // Extended type with account count from join
 export type InstitutionWithCount = Institution & {
@@ -39,6 +40,12 @@ export const columns: ColumnDef<InstitutionWithCount>[] = [
 				title: 'Name',
 				column
 			}),
+		cell: ({ row }) => {
+			return renderComponent(CellName, {
+				name: row.original.name,
+				logoUrl: row.original.logoUrl
+			});
+		},
 		accessorKey: 'name',
 		enableHiding: false
 	},
