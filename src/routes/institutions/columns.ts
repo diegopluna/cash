@@ -1,12 +1,19 @@
 import type { ColumnDef } from '@tanstack/table-core';
 import type { Institution } from './schema';
-import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
+import { renderComponent } from '$lib/components/ui/data-table';
 import { Checkbox } from '$lib/components/ui/checkbox';
 import DataTableColumnHeader from '$lib/components/data-table/data-table-column-header.svelte';
 import DataTableActions from '$lib/components/data-table/data-table-actions.svelte';
 import CellBadge from './cell-badge.svelte';
+import CellCountry from './cell-country.svelte';
+import CellAccountCount from './cell-account-count.svelte';
 
-export const columns: ColumnDef<Institution>[] = [
+// Extended type with account count from join
+export type InstitutionWithCount = Institution & {
+	accountCount: number;
+};
+
+export const columns: ColumnDef<InstitutionWithCount>[] = [
 	{
 		id: 'select',
 		header: ({ table }) =>
@@ -32,7 +39,8 @@ export const columns: ColumnDef<Institution>[] = [
 				title: 'Name',
 				column
 			}),
-		accessorKey: 'name'
+		accessorKey: 'name',
+		enableHiding: false
 	},
 	{
 		id: 'type',
@@ -44,7 +52,10 @@ export const columns: ColumnDef<Institution>[] = [
 		cell: ({ row }) => {
 			return renderComponent(CellBadge, { title: row.original.type, variant: row.original.type });
 		},
-		accessorKey: 'type'
+		accessorKey: 'type',
+		filterFn: (row, id, value: string[]) => {
+			return value.includes(row.getValue(id));
+		}
 	},
 	{
 		id: 'country',
@@ -53,16 +64,79 @@ export const columns: ColumnDef<Institution>[] = [
 				title: 'Country',
 				column
 			}),
-
-		accessorKey: 'country'
+		cell: ({ row }) => {
+			return renderComponent(CellCountry, { code: row.original.country });
+		},
+		accessorKey: 'country',
+		filterFn: (row, id, value: string[]) => {
+			return value.includes(row.getValue(id));
+		}
+	},
+	{
+		id: 'accountCount',
+		header: ({ column }) =>
+			renderComponent(DataTableColumnHeader, {
+				title: 'Accounts',
+				column
+			}),
+		cell: ({ row }) => {
+			return renderComponent(CellAccountCount, { count: row.original.accountCount });
+		},
+		accessorKey: 'accountCount'
+	},
+	{
+		id: 'slug',
+		header: ({ column }) =>
+			renderComponent(DataTableColumnHeader, {
+				title: 'Slug',
+				column
+			}),
+		accessorKey: 'slug',
+		cell: ({ row }) => {
+			const slug = row.original.slug;
+			return slug ? slug : '—';
+		}
+	},
+	{
+		id: 'isbp',
+		header: ({ column }) =>
+			renderComponent(DataTableColumnHeader, {
+				title: 'ISPB',
+				column
+			}),
+		accessorKey: 'isbp',
+		cell: ({ row }) => {
+			const isbp = row.original.isbp;
+			return isbp ? isbp : '—';
+		}
+	},
+	{
+		id: 'cnpj',
+		header: ({ column }) =>
+			renderComponent(DataTableColumnHeader, {
+				title: 'CNPJ',
+				column
+			}),
+		accessorKey: 'cnpj',
+		cell: ({ row }) => {
+			const cnpj = row.original.cnpj;
+			return cnpj ? cnpj : '—';
+		}
 	},
 	{
 		id: 'actions',
 		cell: ({ row }) =>
 			renderComponent(DataTableActions, {
-				onEdit: () => console.log('edit'),
-				onDelete: () => console.log('delete'),
-				onDetails: () => console.log('details')
-			})
+				onEdit: () => console.log('edit', row.original),
+				onDelete: () => console.log('delete', row.original),
+				onDetails: () => console.log('details', row.original)
+			}),
+		enableHiding: false
 	}
 ];
+
+export const defaultHiddenColumns = {
+	slug: false,
+	isbp: false,
+	cnpj: false
+};

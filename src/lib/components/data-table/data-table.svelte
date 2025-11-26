@@ -26,6 +26,7 @@
 		data: TData[];
 		filterPlaceholder?: string;
 		searchColumnId?: string;
+		initialColumnVisibility?: VisibilityState;
 		facetedFilters?: {
 			columnId: string;
 			title: string;
@@ -42,11 +43,12 @@
 		columns,
 		filterPlaceholder = 'Search...',
 		searchColumnId,
+		initialColumnVisibility = {},
 		facetedFilters
 	}: DataTableProps<TData, TValue> = $props();
 
 	let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
-	let columnVisibility = $state<VisibilityState>({});
+	let columnVisibility = $state<VisibilityState>(initialColumnVisibility);
 	let columnFilters = $state<ColumnFiltersState>([]);
 	let sorting = $state<SortingState>([]);
 	let rowSelection = $state<RowSelectionState>({});
