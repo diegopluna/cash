@@ -56,7 +56,8 @@ export const columns: ColumnDef<Category>[] = [
 		cell: ({ row }) =>
 			renderComponent(DataTableActions, {
 				onEdit: () => console.log('edit'),
-				onDelete: () => console.log('delete')
+				onDelete: () => console.log('delete'),
+				onDetails: () => console.log('details')
 			})
 	}
 ];

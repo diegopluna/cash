@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { EllipsisIcon, PencilIcon, TrashIcon } from 'lucide-svelte';
+	import { EllipsisIcon, Info, PencilIcon, TrashIcon } from 'lucide-svelte';
 	import { Button } from '../ui/button';
 	import {
 		DropdownMenu,
@@ -8,7 +8,11 @@
 		DropdownMenuTrigger
 	} from '../ui/dropdown-menu';
 
-	let { onEdit, onDelete }: { onEdit: () => void; onDelete: () => void } = $props();
+	let {
+		onEdit,
+		onDelete,
+		onDetails
+	}: { onEdit: () => void; onDelete: () => void; onDetails: () => void } = $props();
 </script>
 
 <DropdownMenu>
@@ -21,6 +25,10 @@
 		{/snippet}
 	</DropdownMenuTrigger>
 	<DropdownMenuContent class="w-[160px]" align="end">
+		<DropdownMenuItem onclick={onDetails}>
+			<Info />
+			Details
+		</DropdownMenuItem>
 		<DropdownMenuItem onclick={onEdit}>
 			<PencilIcon />
 			Edit

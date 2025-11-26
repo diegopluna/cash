@@ -1,8 +1,10 @@
 import type { ColumnDef } from '@tanstack/table-core';
 import type { Institution } from './schema';
-import { renderComponent } from '$lib/components/ui/data-table';
+import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
 import { Checkbox } from '$lib/components/ui/checkbox';
 import DataTableColumnHeader from '$lib/components/data-table/data-table-column-header.svelte';
+import DataTableActions from '$lib/components/data-table/data-table-actions.svelte';
+import CellBadge from './cell-badge.svelte';
 
 export const columns: ColumnDef<Institution>[] = [
 	{
@@ -39,6 +41,28 @@ export const columns: ColumnDef<Institution>[] = [
 				title: 'Type',
 				column
 			}),
+		cell: ({ row }) => {
+			return renderComponent(CellBadge, { title: row.original.type, variant: row.original.type });
+		},
 		accessorKey: 'type'
+	},
+	{
+		id: 'country',
+		header: ({ column }) =>
+			renderComponent(DataTableColumnHeader, {
+				title: 'Country',
+				column
+			}),
+
+		accessorKey: 'country'
+	},
+	{
+		id: 'actions',
+		cell: ({ row }) =>
+			renderComponent(DataTableActions, {
+				onEdit: () => console.log('edit'),
+				onDelete: () => console.log('delete'),
+				onDetails: () => console.log('details')
+			})
 	}
 ];
