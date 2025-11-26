@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { House, Wallet, TrendingUp, ChartColumn, List } from 'lucide-svelte';
+	import { House, Wallet, TrendingUp, ChartColumn, List, Building } from 'lucide-svelte';
 	import {
 		Sidebar,
 		SidebarContent,
@@ -19,6 +19,7 @@
 		{ name: 'Dashboard', href: '/', icon: House },
 		{ name: 'Transactions', href: '/transactions', icon: Wallet },
 		{ name: 'Categories', href: '/categories', icon: List },
+		{ name: 'Institutions', href: '/institutions', icon: Building },
 		{ name: 'Investments', href: '/investments', icon: TrendingUp },
 		{ name: 'Reports', href: '/reports', icon: ChartColumn }
 	];

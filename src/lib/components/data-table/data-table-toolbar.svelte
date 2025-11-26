@@ -9,7 +9,7 @@
 
 	type DataTableToolbarProps = {
 		filterPlaceholder: string;
-		searchColumnId: string;
+		searchColumnId?: string;
 		facetedFilters?: {
 			columnId: string;
 			title: string;
@@ -29,18 +29,19 @@
 
 <div class="flex items-center justify-between">
 	<div class="flex flex-1 items-center space-x-2">
-		<Input
-			placeholder={filterPlaceholder}
-			value={(table.getColumn(searchColumnId)?.getFilterValue() as string) ?? ''}
-			oninput={(e) => {
-				table.getColumn(searchColumnId)?.setFilterValue(e.currentTarget.value);
-			}}
-			onchange={(e) => {
-				table.getColumn(searchColumnId)?.setFilterValue(e.currentTarget.value);
-			}}
-			class="h-8 w-[150px] lg:w-[250px]"
-		/>
-
+		{#if searchColumnId}
+			<Input
+				placeholder={filterPlaceholder}
+				value={(table.getColumn(searchColumnId)?.getFilterValue() as string) ?? ''}
+				oninput={(e) => {
+					table.getColumn(searchColumnId)?.setFilterValue(e.currentTarget.value);
+				}}
+				onchange={(e) => {
+					table.getColumn(searchColumnId)?.setFilterValue(e.currentTarget.value);
+				}}
+				class="h-8 w-[150px] lg:w-[250px]"
+			/>
+		{/if}
 		{#each facetedFilters as facetedFilter}
 			{@const column = table.getColumn(facetedFilter.columnId)}
 			{#if column}

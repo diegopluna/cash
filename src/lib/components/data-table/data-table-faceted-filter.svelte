@@ -99,6 +99,10 @@
 								<span class="ms-auto flex size-4 items-center justify-center font-mono text-xs">
 									{facets.get(option.value)}
 								</span>
+							{:else}
+								<span class="ms-auto flex size-4 items-center justify-center font-mono text-xs"
+									>0</span
+								>
 							{/if}
 							<span>{option.label}</span>
 						</CommandItem>

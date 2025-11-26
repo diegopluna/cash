@@ -120,9 +120,7 @@
 </script>
 
 <div class="space-y-4">
-	{#if searchColumnId}
-		<DataTableToolbar {filterPlaceholder} {searchColumnId} {facetedFilters} />
-	{/if}
+	<DataTableToolbar {filterPlaceholder} {searchColumnId} {facetedFilters} />
 	<div class="rounded-md border">
 		<Table>
 			<TableHeader>
