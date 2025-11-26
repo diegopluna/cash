@@ -8,6 +8,7 @@ import CellBadge from './cell-badge.svelte';
 import CellCountry from './cell-country.svelte';
 import CellAccountCount from './cell-account-count.svelte';
 import CellName from './cell-name.svelte';
+import { Link } from '$lib/components/ui/link';
 
 // Extended type with account count from join
 export type InstitutionWithCount = Institution & {
@@ -131,6 +132,19 @@ export const columns: ColumnDef<InstitutionWithCount>[] = [
 		}
 	},
 	{
+		id: 'websiteURL',
+		header: ({ column }) =>
+			renderComponent(DataTableColumnHeader, {
+				title: 'Website URL',
+				column
+			}),
+		accessorKey: 'websiteUrl',
+		cell: ({ row }) => {
+			const websiteUrl = row.original.websiteUrl;
+			return websiteUrl ? renderComponent(Link, { href: websiteUrl, label: websiteUrl }) : '—';
+		}
+	},
+	{
 		id: 'actions',
 		cell: ({ row }) =>
 			renderComponent(DataTableActions, {
@@ -145,5 +159,6 @@ export const columns: ColumnDef<InstitutionWithCount>[] = [
 export const defaultHiddenColumns = {
 	slug: false,
 	isbp: false,
-	cnpj: false
+	cnpj: false,
+	websiteURL: false
 };

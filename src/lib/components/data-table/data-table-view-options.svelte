@@ -11,6 +11,7 @@
 	} from '../ui/dropdown-menu';
 	import { dataTableContext } from './context';
 	import { buttonVariants } from '../ui/button';
+	import { formatLabel } from '$lib/utils';
 
 	const table = dataTableContext.get();
 </script>
@@ -37,7 +38,7 @@
 					bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}
 					class="capitalize"
 				>
-					{column.id}
+					{formatLabel(column.id)}
 				</DropdownMenuCheckboxItem>
 			{/each}
 		</DropdownMenuGroup>

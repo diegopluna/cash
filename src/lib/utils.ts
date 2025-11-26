@@ -45,3 +45,17 @@ export function countryCodeToFlag(code: string): string {
 		.map((char) => 0x1f1e6 + char.charCodeAt(0) - 65);
 	return String.fromCodePoint(...codePoints);
 }
+
+export function formatLabel(str: string): string {
+	return (
+		str
+			// Handle snake_case: replace underscores with spaces
+			.replace(/_/g, ' ')
+			// Handle PascalCase/camelCase: insert space before uppercase letters
+			.replace(/([a-z])([A-Z])/g, '$1 $2')
+			// Handle consecutive uppercase (like URL, ID)
+			.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
+			// Capitalize first letter of each word
+			.replace(/\b\w/g, (c) => c.toUpperCase())
+	);
+}
