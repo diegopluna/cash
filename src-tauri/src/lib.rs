@@ -1,3 +1,8 @@
+use tauri::Manager;
+use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
+
+use crate::drizzle_proxy::{setup_db, AppState};
+
 mod drizzle_proxy;
 include!(concat!(env!("OUT_DIR"), "/generated_migrations.rs"));
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -24,6 +29,27 @@ pub fn run() {
             polite_restart,
             drizzle_proxy::run_sql
         ])
+        .setup(|app| {
+            tauri::async_runtime::block_on(async move {
+                match setup_db(&app).await {
+                    Ok(db) => {
+                        app.manage(AppState { db });
+                    }
+                    Err(e) => {
+                        eprintln!("Failed to initialize database: {}", e);
+                        // The app will fail to execute queries, but won't crash on startup
+                        // Consider showing an error dialog to user
+                        app.dialog()
+                            .message("Failed to initialize database")
+                            .kind(MessageDialogKind::Error)
+                            .title("Error")
+                            .buttons(MessageDialogButtons::Ok)
+                            .blocking_show();
+                    }
+                }
+            });
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

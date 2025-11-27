@@ -5,11 +5,17 @@ use serde_json::Value;
 use sqlx::{
     query::Query,
     sqlite::{SqliteArguments, SqliteRow},
-    Column, Row, Sqlite, SqlitePool, TypeInfo,
+    Column, Pool, Row, Sqlite, SqlitePool, TypeInfo,
 };
 use std::path::PathBuf;
-use tauri::Manager;
 use tauri::{command, AppHandle};
+use tauri::{App, Manager};
+
+pub type Db = Pool<Sqlite>;
+
+pub struct AppState {
+    pub db: Db,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct SqlQuery {
@@ -24,16 +30,11 @@ pub struct SqlRow {
 }
 
 #[command]
-pub async fn run_sql(app: AppHandle, query: SqlQuery) -> Result<Vec<SqlRow>, String> {
-    let db_path = get_app_db_path(&app)?;
-    let uri = format!("sqlite://{}", db_path.display());
-
-    // TODO: We are creating a new connection pool for each query. We should consider
-    // reusing a connection pool or managing it more efficiently.
-    // For now, this is a simple implementation.
-    let pool = SqlitePool::connect(&uri)
-        .await
-        .map_err(|e| format!("Failed to connect to DB: {}", e))?;
+pub async fn run_sql(
+    state: tauri::State<'_, AppState>,
+    query: SqlQuery,
+) -> Result<Vec<SqlRow>, String> {
+    let pool = &state.db;
 
     let mut q = sqlx::query(&query.sql);
     for param in &query.params {
@@ -41,7 +42,7 @@ pub async fn run_sql(app: AppHandle, query: SqlQuery) -> Result<Vec<SqlRow>, Str
     }
 
     let rows = q
-        .fetch_all(&pool)
+        .fetch_all(pool)
         .await
         .map_err(|e| format!("Query failed: {}", e))?;
 
@@ -66,6 +67,15 @@ pub async fn run_sql(app: AppHandle, query: SqlQuery) -> Result<Vec<SqlRow>, Str
         .collect();
 
     Ok(result)
+}
+
+pub async fn setup_db(app: &App) -> Result<SqlitePool, String> {
+    let db_path = get_app_db_path(&app.handle())?;
+    let uri = format!("sqlite://{}", db_path.display());
+
+    SqlitePool::connect(&uri)
+        .await
+        .map_err(|e| format!("Failed to connect to DB: {}", e))
 }
 
 fn get_app_db_path(app: &AppHandle) -> Result<PathBuf, String> {
