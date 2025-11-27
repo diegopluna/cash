@@ -5,7 +5,6 @@ import appSettings from './schema/settings';
 import * as schema from './schema';
 import { uuidv7 } from 'uuidv7';
 
-// TODO: Improve error handling and reporting
 export async function seed() {
 	// @ts-ignore
 	await reset(db, schema);
