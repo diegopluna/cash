@@ -83,6 +83,8 @@
 		value
 	}));
 
+	// TODO: Maybe bring this handler into the form component itself to reduce prop drilling and avoid duplicate code
+	// Maybe extract to a shared utility if used in multiple places
 	function handleFormSuccess(data: Omit<Institution, 'id' | 'createdAt' | 'updatedAt'>) {
 		if (editingInstitution) {
 			// Update existing institution using draft pattern
@@ -111,6 +113,8 @@
 		}
 	}
 </script>
+
+<!-- TODO: Add Loading State -->
 
 <ConfirmDeleteDialog />
 <div class="min-h-screen bg-background font-sans text-foreground selection:bg-primary/20">

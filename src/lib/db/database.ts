@@ -26,6 +26,7 @@ const db = drizzle(
 			}
 			return method === 'get' ? { rows: rows[0].values } : { rows: rows.map((r) => r.values) };
 		} catch (e: unknown) {
+			// TODO: What is the best way to show this error to the user, or what is the best return behaviour when a query fails?
 			console.error('Error from sqlite proxy server: ', e);
 			return { rows: [] };
 		}

@@ -59,3 +59,13 @@ export function formatLabel(str: string): string {
 			.replace(/\b\w/g, (c) => c.toUpperCase())
 	);
 }
+
+
+// TODO: Add tests for these functions
+export function toCents(amount: number): number {
+	return Math.round(amount * 100);
+}
+
+export function fromCents(cents: number): number {
+	return cents / 100;
+}

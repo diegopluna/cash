@@ -5,6 +5,8 @@ import db from '$lib/db/database';
 import { accounts } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 
+// TODO: Create a base createCollection function to reduce duplication across collections
+// Also, add pagination/virtualization support to avoid loading all records at once
 export const accountsCollection = createCollection(
 	queryCollectionOptions({
 		queryClient,

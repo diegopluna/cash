@@ -12,6 +12,8 @@
 	import { Plus } from 'lucide-svelte';
 	import FormInput from '$lib/components/form/form-input.svelte';
 
+	// TODO: Complete this form
+
 	let { isEdit = false }: { isEdit?: boolean } = $props();
 
 	const form = createForm(() => ({

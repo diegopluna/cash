@@ -28,6 +28,9 @@ pub async fn run_sql(app: AppHandle, query: SqlQuery) -> Result<Vec<SqlRow>, Str
     let db_path = get_app_db_path(&app)?;
     let uri = format!("sqlite://{}", db_path.display());
 
+    // TODO: We are creating a new connection pool for each query. We should consider
+    // reusing a connection pool or managing it more efficiently.
+    // For now, this is a simple implementation.
     let pool = SqlitePool::connect(&uri)
         .await
         .map_err(|e| format!("Failed to connect to DB: {}", e))?;
