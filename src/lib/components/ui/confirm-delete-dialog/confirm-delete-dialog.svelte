@@ -112,11 +112,13 @@
 				/>
 			{/if}
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel onclick={dialogState.cancel}>
+				<AlertDialog.Cancel type="button" onclick={dialogState.cancel}>
 					{dialogState.options?.cancel?.text ?? 'Cancel'}
 				</AlertDialog.Cancel>
 				<AlertDialog.Action
 					type="submit"
+					variant="destructive"
+					loading={dialogState.loading}
 					disabled={dialogState.options?.input &&
 						dialogState.inputText !== dialogState.options.input.confirmationText}
 				>
