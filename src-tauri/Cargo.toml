@@ -31,6 +31,8 @@ tauri-plugin-svelte = "3.1.0"
 sqlx = { version = "0.8.6", features = ["sqlite", "runtime-tokio-native-tls"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 base64 = "0.22.1"
+tauri-plugin-log = "2"
+log = "0.4"
 
 [profile.dev]
 incremental = true

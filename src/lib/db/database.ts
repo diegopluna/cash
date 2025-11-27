@@ -1,6 +1,8 @@
 import { invoke } from '@tauri-apps/api/core';
 import { drizzle } from 'drizzle-orm/sqlite-proxy';
 import * as schema from './schema';
+import { toast } from 'svelte-sonner';
+import { error } from '@tauri-apps/plugin-log';
 
 type Row = {
 	columns: string[];
@@ -27,7 +29,8 @@ const db = drizzle(
 			return method === 'get' ? { rows: rows[0].values } : { rows: rows.map((r) => r.values) };
 		} catch (e: unknown) {
 			// TODO: What is the best way to show this error to the user, or what is the best return behaviour when a query fails?
-			console.error('Error from sqlite proxy server: ', e);
+			error(`Error from sqlite proxy server: ${JSON.stringify(e)}`);
+			toast.error('Database error ocurred. Check the logs for details.');
 			return { rows: [] };
 		}
 	},

@@ -16,6 +16,11 @@ fn polite_restart(app: tauri::AppHandle) {
 pub fn run() {
     let migrations = load_migrations();
     tauri::Builder::default()
+        .plugin(
+            tauri_plugin_log::Builder::new()
+                .level(tauri_plugin_log::log::LevelFilter::Info)
+                .build(),
+        )
         .plugin(tauri_plugin_svelte::init())
         .plugin(
             tauri_plugin_sql::Builder::default()
@@ -36,11 +41,9 @@ pub fn run() {
                         app.manage(AppState { db });
                     }
                     Err(e) => {
-                        eprintln!("Failed to initialize database: {}", e);
-                        // The app will fail to execute queries, but won't crash on startup
-                        // Consider showing an error dialog to user
+                        log::error!("Failed to initialize database: {}", e);
                         app.dialog()
-                            .message("Failed to initialize database")
+                            .message("Failed to initialize database. See logs for details.")
                             .kind(MessageDialogKind::Error)
                             .title("Error")
                             .buttons(MessageDialogButtons::Ok)
