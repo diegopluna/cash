@@ -15,146 +15,154 @@ export type InstitutionWithCount = Institution & {
 	accountCount: number;
 };
 
-export const columns: ColumnDef<InstitutionWithCount>[] = [
-	{
-		id: 'select',
-		header: ({ table }) =>
-			renderComponent(Checkbox, {
-				checked: table.getIsAllPageRowsSelected(),
-				onCheckedChange: (value) => table.toggleAllPageRowsSelected(value),
-				indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected(),
-				'aria-label': 'Select all'
-			}),
-		cell: ({ row }) =>
-			renderComponent(Checkbox, {
-				checked: row.getIsSelected(),
-				onCheckedChange: (value) => row.toggleSelected(value),
-				'aria-label': 'Select row'
-			}),
-		enableSorting: false,
-		enableHiding: false
-	},
-	{
-		id: 'name',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'Name',
-				column
-			}),
-		cell: ({ row }) => {
-			return renderComponent(CellName, {
-				name: row.original.name,
-				logoUrl: row.original.logoUrl
-			});
+export type ColumnCallbacks = {
+	onEdit: (institution: InstitutionWithCount) => void;
+	onDelete: (institution: InstitutionWithCount) => void;
+	onDetails: (institution: InstitutionWithCount) => void;
+};
+
+export function createColumns(callbacks: ColumnCallbacks): ColumnDef<InstitutionWithCount>[] {
+	return [
+		{
+			id: 'select',
+			header: ({ table }) =>
+				renderComponent(Checkbox, {
+					checked: table.getIsAllPageRowsSelected(),
+					onCheckedChange: (value) => table.toggleAllPageRowsSelected(value),
+					indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected(),
+					'aria-label': 'Select all'
+				}),
+			cell: ({ row }) =>
+				renderComponent(Checkbox, {
+					checked: row.getIsSelected(),
+					onCheckedChange: (value) => row.toggleSelected(value),
+					'aria-label': 'Select row'
+				}),
+			enableSorting: false,
+			enableHiding: false
 		},
-		accessorKey: 'name',
-		enableHiding: false
-	},
-	{
-		id: 'type',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'Type',
-				column
-			}),
-		cell: ({ row }) => {
-			return renderComponent(CellBadge, { title: row.original.type, variant: row.original.type });
+		{
+			id: 'name',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'Name',
+					column
+				}),
+			cell: ({ row }) => {
+				return renderComponent(CellName, {
+					name: row.original.name,
+					logoUrl: row.original.logoUrl
+				});
+			},
+			accessorKey: 'name',
+			enableHiding: false
 		},
-		accessorKey: 'type',
-		filterFn: (row, id, value: string[]) => {
-			return value.includes(row.getValue(id));
-		}
-	},
-	{
-		id: 'country',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'Country',
-				column
-			}),
-		cell: ({ row }) => {
-			return renderComponent(CellCountry, { code: row.original.country });
+		{
+			id: 'type',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'Type',
+					column
+				}),
+			cell: ({ row }) => {
+				return renderComponent(CellBadge, { title: row.original.type, variant: row.original.type });
+			},
+			accessorKey: 'type',
+			filterFn: (row, id, value: string[]) => {
+				return value.includes(row.getValue(id));
+			}
 		},
-		accessorKey: 'country',
-		filterFn: (row, id, value: string[]) => {
-			return value.includes(row.getValue(id));
-		}
-	},
-	{
-		id: 'accountCount',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'Accounts',
-				column
-			}),
-		cell: ({ row }) => {
-			return renderComponent(CellAccountCount, { count: row.original.accountCount });
+		{
+			id: 'country',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'Country',
+					column
+				}),
+			cell: ({ row }) => {
+				return renderComponent(CellCountry, { code: row.original.country });
+			},
+			accessorKey: 'country',
+			filterFn: (row, id, value: string[]) => {
+				return value.includes(row.getValue(id));
+			}
 		},
-		accessorKey: 'accountCount'
-	},
-	{
-		id: 'slug',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'Slug',
-				column
-			}),
-		accessorKey: 'slug',
-		cell: ({ row }) => {
-			const slug = row.original.slug;
-			return slug ? slug : '—';
+		{
+			id: 'accountCount',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'Accounts',
+					column
+				}),
+			cell: ({ row }) => {
+				return renderComponent(CellAccountCount, { count: row.original.accountCount });
+			},
+			accessorKey: 'accountCount'
+		},
+		{
+			id: 'slug',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'Slug',
+					column
+				}),
+			accessorKey: 'slug',
+			cell: ({ row }) => {
+				const slug = row.original.slug;
+				return slug ? slug : '—';
+			}
+		},
+		{
+			id: 'isbp',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'ISPB',
+					column
+				}),
+			accessorKey: 'isbp',
+			cell: ({ row }) => {
+				const isbp = row.original.isbp;
+				return isbp ? isbp : '—';
+			}
+		},
+		{
+			id: 'cnpj',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'CNPJ',
+					column
+				}),
+			accessorKey: 'cnpj',
+			cell: ({ row }) => {
+				const cnpj = row.original.cnpj;
+				return cnpj ? cnpj : '—';
+			}
+		},
+		{
+			id: 'websiteURL',
+			header: ({ column }) =>
+				renderComponent(DataTableColumnHeader, {
+					title: 'Website URL',
+					column
+				}),
+			accessorKey: 'websiteUrl',
+			cell: ({ row }) => {
+				const websiteUrl = row.original.websiteUrl;
+				return websiteUrl ? renderComponent(Link, { href: websiteUrl, label: websiteUrl }) : '—';
+			}
+		},
+		{
+			id: 'actions',
+			cell: ({ row }) =>
+				renderComponent(DataTableActions, {
+					onEdit: () => callbacks.onEdit(row.original),
+					onDelete: () => callbacks.onDelete(row.original),
+					onDetails: () => callbacks.onDetails(row.original)
+				}),
+			enableHiding: false
 		}
-	},
-	{
-		id: 'isbp',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'ISPB',
-				column
-			}),
-		accessorKey: 'isbp',
-		cell: ({ row }) => {
-			const isbp = row.original.isbp;
-			return isbp ? isbp : '—';
-		}
-	},
-	{
-		id: 'cnpj',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'CNPJ',
-				column
-			}),
-		accessorKey: 'cnpj',
-		cell: ({ row }) => {
-			const cnpj = row.original.cnpj;
-			return cnpj ? cnpj : '—';
-		}
-	},
-	{
-		id: 'websiteURL',
-		header: ({ column }) =>
-			renderComponent(DataTableColumnHeader, {
-				title: 'Website URL',
-				column
-			}),
-		accessorKey: 'websiteUrl',
-		cell: ({ row }) => {
-			const websiteUrl = row.original.websiteUrl;
-			return websiteUrl ? renderComponent(Link, { href: websiteUrl, label: websiteUrl }) : '—';
-		}
-	},
-	{
-		id: 'actions',
-		cell: ({ row }) =>
-			renderComponent(DataTableActions, {
-				onEdit: () => console.log('edit', row.original),
-				onDelete: () => console.log('delete', row.original),
-				onDetails: () => console.log('details', row.original)
-			}),
-		enableHiding: false
-	}
-];
+	];
+}
 
 export const defaultHiddenColumns = {
 	slug: false,

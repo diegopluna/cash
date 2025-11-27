@@ -21,37 +21,39 @@
 	import { generateSlug } from '$lib/utils';
 
 	let {
-		isEdit = false,
-		institution = undefined,
-		onSuccess = () => {}
+		open = $bindable(false),
+		institution = $bindable<Institution | undefined>(undefined),
+		onSuccess = () => {},
+		showTrigger = true
 	}: {
-		isEdit?: boolean;
+		open?: boolean;
 		institution?: Institution;
 		onSuccess?: (institution: Omit<Institution, 'id' | 'createdAt' | 'updatedAt'>) => void;
+		showTrigger?: boolean;
 	} = $props();
 
-	let open = $state(false);
+	const isEdit = $derived(!!institution);
+
+	let wasOpen = false;
 
 	const form = createForm(() => ({
 		defaultValues: {
-			name: institution?.name ?? '',
-			type: institution?.type ?? 'bank',
-			country: institution?.country ?? 'BR',
-			slug: institution?.slug ?? '',
-			isbp: institution?.isbp ?? '',
-			cnpj: institution?.cnpj ?? '',
-			websiteUrl: institution?.websiteUrl ?? '',
-			logoUrl: institution?.logoUrl ?? ''
+			name: '',
+			type: 'bank' as 'bank' | 'fintech' | 'broker' | 'digital_wallet' | 'other',
+			country: 'BR',
+			slug: '',
+			isbp: '',
+			cnpj: '',
+			websiteUrl: '',
+			logoUrl: ''
 		},
 		onSubmit: async ({ value }) => {
-			// Validate before submitting
 			const result = institutionFormSchema.safeParse(value);
 			if (!result.success) {
 				console.error('Validation failed:', result.error);
 				return;
 			}
 
-			// Clean up empty optional fields to null
 			const cleanedValues = {
 				...value,
 				slug: value.slug || null,
@@ -61,26 +63,40 @@
 				logoUrl: value.logoUrl || null
 			};
 
-			// TODO: Wire up to database mutation
-			console.log('Submitting:', cleanedValues);
-
-			// Close sheet and trigger callback
 			open = false;
 			onSuccess(cleanedValues);
+
+			institution = undefined;
 		}
 	}));
 
-	// Watch country to conditionally show Brazilian fields
+	$effect(() => {
+		if (open && !wasOpen) {
+			wasOpen = true;
+
+			form.setFieldValue('name', institution?.name ?? '');
+			form.setFieldValue('type', institution?.type ?? 'bank');
+			form.setFieldValue('country', institution?.country ?? 'BR');
+			form.setFieldValue('slug', institution?.slug ?? '');
+			form.setFieldValue('isbp', institution?.isbp ?? '');
+			form.setFieldValue('cnpj', institution?.cnpj ?? '');
+			form.setFieldValue('websiteUrl', institution?.websiteUrl ?? '');
+			form.setFieldValue('logoUrl', institution?.logoUrl ?? '');
+		}
+
+		if (!open && wasOpen) {
+			wasOpen = false;
+		}
+	});
+
 	const isBrazil = form.useStore((state) => state.values.country === 'BR');
 	const hasName = form.useStore((state) => state.values.name.trim().length > 0);
 
-	// Type options with icons
 	const typeOptions = Object.entries(institutionTypeConfig).map(([value, config]) => ({
 		value,
 		label: `${config.icon} ${config.label}`
 	}));
 
-	// Auto-generate slug from name
 	function handleGenerateSlug() {
 		const name = form.state.values.name;
 		if (name) {
@@ -88,13 +104,22 @@
 			form.setFieldValue('slug', slug);
 		}
 	}
+
+	function handleOpenChange(isOpen: boolean) {
+		open = isOpen;
+		if (!isOpen) {
+			institution = undefined;
+		}
+	}
 </script>
 
-<Sheet bind:open>
-	<SheetTrigger class={buttonVariants({ variant: 'default' })}>
-		<Plus />
-		Add Institution
-	</SheetTrigger>
+<Sheet {open} onOpenChange={handleOpenChange}>
+	{#if showTrigger}
+		<SheetTrigger class={buttonVariants({ variant: 'default' })}>
+			<Plus />
+			Add Institution
+		</SheetTrigger>
+	{/if}
 	<SheetContent side="right" class="flex flex-col">
 		<SheetHeader>
 			{#if isEdit}

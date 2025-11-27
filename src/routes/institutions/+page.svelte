@@ -2,7 +2,7 @@
 	import { institutionsCollection } from '$lib/tanstack/db/institutions-collection';
 	import { accountsCollection } from '$lib/tanstack/db/accounts-collection';
 	import { count, eq, useLiveQuery } from '@tanstack/svelte-db';
-	import { columns, defaultHiddenColumns, type InstitutionWithCount } from './columns';
+	import { createColumns, defaultHiddenColumns, type InstitutionWithCount } from './columns';
 	import DataTable from '$lib/components/data-table/data-table.svelte';
 	import InstitutionsForm from './institutions-form.svelte';
 	import type { Institution } from './schema';
@@ -11,6 +11,7 @@
 	import { institutionTypeConfig } from './schema';
 	import countries from '$lib/countries';
 	import { countryCodeToFlag } from '$lib/utils';
+	import { confirmDelete, ConfirmDeleteDialog } from '$lib/components/ui/confirm-delete-dialog';
 
 	const query = useLiveQuery((q) => {
 		const accountCounts = q
@@ -30,6 +31,34 @@
 				...institution,
 				accountCount: accountCount?.accountCount ?? 0
 			}));
+	});
+
+	// Form state
+	let formOpen = $state(false);
+	let editingInstitution = $state<Institution | undefined>(undefined);
+
+	// Create columns with callbacks
+	const columns = createColumns({
+		onEdit: (institution) => {
+			editingInstitution = institution;
+			formOpen = true;
+		},
+		onDelete: (institution) => {
+			// TODO: Add confirmation dialog
+
+			confirmDelete({
+				title: 'Delete Institution',
+				description: `Are you sure you want to delete "${institution.name}"?`,
+				onConfirm: async () => {
+					institutionsCollection.delete(institution.id);
+					toast.success(`"${institution.name}" deleted successfully`);
+				}
+			});
+		},
+		onDetails: (institution) => {
+			// TODO: Navigate to details page or open details modal
+			console.log('details', institution);
+		}
 	});
 
 	// Get unique countries from data for filter options
@@ -54,19 +83,36 @@
 		value
 	}));
 
-	function handleSuccess(institution: Omit<Institution, 'id' | 'createdAt' | 'updatedAt'>) {
-		const institutionToInsert = {
-			...institution,
-			id: uuidv7(),
-			createdAt: new Date(),
-			updatedAt: new Date()
-		};
-		institutionsCollection.insert(institutionToInsert);
-
-		toast.success('Institution added successfully');
+	function handleFormSuccess(data: Omit<Institution, 'id' | 'createdAt' | 'updatedAt'>) {
+		if (editingInstitution) {
+			// Update existing institution using draft pattern
+			institutionsCollection.update(editingInstitution.id, (draft) => {
+				draft.name = data.name;
+				draft.type = data.type;
+				draft.country = data.country;
+				draft.slug = data.slug;
+				draft.isbp = data.isbp;
+				draft.cnpj = data.cnpj;
+				draft.websiteUrl = data.websiteUrl;
+				draft.logoUrl = data.logoUrl;
+				draft.updatedAt = new Date();
+			});
+			toast.success(`"${data.name}" updated successfully`);
+		} else {
+			// Create new institution
+			const institutionToInsert = {
+				...data,
+				id: uuidv7(),
+				createdAt: new Date(),
+				updatedAt: new Date()
+			};
+			institutionsCollection.insert(institutionToInsert);
+			toast.success(`"${data.name}" added successfully`);
+		}
 	}
 </script>
 
+<ConfirmDeleteDialog />
 <div class="min-h-screen bg-background font-sans text-foreground selection:bg-primary/20">
 	<div class="mx-auto max-w-[1600px] space-y-8 p-6 lg:p-10">
 		<header class="flex flex-col justify-between gap-6 md:flex-row md:items-center">
@@ -74,7 +120,11 @@
 				<h1 class="text-3xl font-bold tracking-tight text-foreground">Institutions</h1>
 				<p class="text-muted-foreground">Manage your banks, fintechs, and financial institutions</p>
 			</div>
-			<InstitutionsForm onSuccess={handleSuccess} />
+			<InstitutionsForm
+				bind:open={formOpen}
+				bind:institution={editingInstitution}
+				onSuccess={handleFormSuccess}
+			/>
 		</header>
 		<DataTable
 			data={query.data}
