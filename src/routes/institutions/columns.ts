@@ -51,7 +51,8 @@ export function createColumns(callbacks: ColumnCallbacks): ColumnDef<Institution
 			cell: ({ row }) => {
 				return renderComponent(CellName, {
 					name: row.original.name,
-					logoUrl: row.original.logoUrl
+					logoUrl: row.original.logoUrl,
+					id: row.original.id
 				});
 			},
 			accessorKey: 'name',

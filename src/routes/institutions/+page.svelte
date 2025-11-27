@@ -12,6 +12,7 @@
 	import countries from '$lib/countries';
 	import { countryCodeToFlag } from '$lib/utils';
 	import { confirmDelete, ConfirmDeleteDialog } from '$lib/components/ui/confirm-delete-dialog';
+	import { goto } from '$app/navigation';
 
 	const query = useLiveQuery((q) => {
 		const accountCounts = q
@@ -56,8 +57,7 @@
 			});
 		},
 		onDetails: (institution) => {
-			// TODO: Navigate to details page or open details modal
-			console.log('details', institution);
+			goto(`/institutions/${institution.id}`);
 		}
 	});
 

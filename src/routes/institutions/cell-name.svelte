@@ -1,11 +1,11 @@
 <script lang="ts">
-	let { name, logoUrl }: { name: string; logoUrl: string | null } = $props();
+	let { name, logoUrl, id }: { name: string; logoUrl: string | null; id: string } = $props();
 
 	let imgError = $state(false);
 	const showLogo = $derived(logoUrl && !imgError);
 </script>
 
-<div class="flex items-center gap-2.5">
+<a href={`/institutions/${id}`} class="flex items-center gap-2.5 hover:underline">
 	{#if showLogo}
 		<img
 			src={logoUrl}
@@ -21,4 +21,4 @@
 		</div>
 	{/if}
 	<span class="font-medium">{name}</span>
-</div>
+</a>
