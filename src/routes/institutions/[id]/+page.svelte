@@ -8,7 +8,6 @@
 	import type { Institution } from '../schema';
 	import InstitutionsForm from '../institutions-form.svelte';
 	import { toast } from 'svelte-sonner';
-	import { tick } from 'svelte';
 
 	let { params }: PageProps = $props();
 
@@ -67,7 +66,6 @@
 					variant="outline"
 					onclick={async () => {
 						editingInstitution = institution;
-						await tick();
 						formOpen = true;
 					}}
 				>

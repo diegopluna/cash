@@ -6,19 +6,19 @@
 
 @font-face {
 	font-family: 'Geist Mono';
-	src: url('fonts/GeistMono-VariableFont_wght.ttf') format('truetype-variations');
+	src: url('/fonts/GeistMono-VariableFont_wght.ttf') format('truetype-variations');
 	font-weight: 100 900;
 	font-stretch: 75% 125%;
 	font-style: oblique 0deg 20deg;
-  }
+}
 
 @font-face {
 	font-family: 'JetBrains Mono';
-	src: url('fonts/JetBrainsMono-VariableFont_wght.ttf') format('truetype-variations');
+	src: url('/fonts/JetBrainsMono-VariableFont_wght.ttf') format('truetype-variations');
 	font-weight: 100 900;
 	font-stretch: 75% 125%;
 	font-style: oblique 0deg 20deg;
-  }
+}
 
 :root {
 	--background: oklch(1 0 0);
@@ -188,7 +188,8 @@
 	--tracking-widest: calc(var(--tracking-normal) + 0.1em);
 }
 
-html, body {
+html,
+body {
 	letter-spacing: var(--tracking-normal);
 	overscroll-behavior: none;
 	--webkit-overscroll-behavior: touch;
@@ -199,6 +200,6 @@ html, body {
 		@apply border-border outline-ring/50;
 	}
 	body {
-		@apply bg-background text-foreground select-none overscroll-none;
+		@apply overscroll-none bg-background text-foreground select-none;
 	}
 }
