@@ -70,7 +70,7 @@
 		}
 	}));
 
-	$effect(() => {
+	$effect.pre(() => {
 		if (open && !wasOpen) {
 			wasOpen = true;
 

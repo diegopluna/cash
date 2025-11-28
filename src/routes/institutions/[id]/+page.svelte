@@ -8,6 +8,7 @@
 	import type { Institution } from '../schema';
 	import InstitutionsForm from '../institutions-form.svelte';
 	import { toast } from 'svelte-sonner';
+	import { tick } from 'svelte';
 
 	let { params }: PageProps = $props();
 
@@ -64,8 +65,9 @@
 			<div class="flex items-center gap-2">
 				<Button
 					variant="outline"
-					onclick={() => {
+					onclick={async () => {
 						editingInstitution = institution;
+						await tick();
 						formOpen = true;
 					}}
 				>
