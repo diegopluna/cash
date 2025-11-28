@@ -1,5 +1,7 @@
 <script lang="ts" module>
 	import { cn, type WithElementRef } from '$lib/utils.js';
+	import type { WithChildren, WithoutChildren } from 'bits-ui';
+	import { LoaderCircleIcon } from 'lucide-svelte';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import { type VariantProps, tv } from 'tailwind-variants';
 
@@ -34,49 +36,82 @@
 	export type ButtonVariant = VariantProps<typeof buttonVariants>['variant'];
 	export type ButtonSize = VariantProps<typeof buttonVariants>['size'];
 
-	export type ButtonProps = WithElementRef<HTMLButtonAttributes> &
-		WithElementRef<HTMLAnchorAttributes> & {
-			variant?: ButtonVariant;
-			size?: ButtonSize;
+	export type ButtonPropsWithoutHTML = WithChildren<{
+		ref?: HTMLElement | null;
+		variant?: ButtonVariant;
+		size?: ButtonSize;
+		loading?: boolean;
+		onClickPromise?: (
+			e: MouseEvent & {
+				currentTarget: EventTarget & HTMLButtonElement;
+			}
+		) => Promise<void>;
+	}>;
+
+	export type AnchorElementProps = ButtonPropsWithoutHTML &
+		WithoutChildren<Omit<HTMLAnchorAttributes, 'href' | 'type'>> & {
+			href: HTMLAnchorAttributes['href'];
+			type?: never;
+			disabled?: HTMLButtonAttributes['disabled'];
 		};
+
+	export type ButtonElementProps = ButtonPropsWithoutHTML &
+		WithoutChildren<Omit<HTMLButtonAttributes, 'type' | 'href'>> & {
+			type?: HTMLButtonAttributes['type'];
+			href?: never;
+			disabled?: HTMLButtonAttributes['disabled'];
+		};
+
+	export type ButtonProps = AnchorElementProps | ButtonElementProps;
 </script>
 
 <script lang="ts">
 	let {
-		class: className,
+		ref = $bindable(null),
 		variant = 'default',
 		size = 'default',
-		ref = $bindable(null),
 		href = undefined,
 		type = 'button',
-		disabled,
+		loading = false,
+		disabled = false,
+		tabindex = 0,
+		onclick,
+		onClickPromise,
+		class: className,
 		children,
-		...restProps
+		...rest
 	}: ButtonProps = $props();
 </script>
 
-{#if href}
-	<a
-		bind:this={ref}
-		data-slot="button"
-		class={cn(buttonVariants({ variant, size }), className)}
-		href={disabled ? undefined : href}
-		aria-disabled={disabled}
-		role={disabled ? 'link' : undefined}
-		tabindex={disabled ? -1 : undefined}
-		{...restProps}
-	>
-		{@render children?.()}
-	</a>
-{:else}
-	<button
-		bind:this={ref}
-		data-slot="button"
-		class={cn(buttonVariants({ variant, size }), className)}
-		{type}
-		{disabled}
-		{...restProps}
-	>
-		{@render children?.()}
-	</button>
-{/if}
+<svelte:element
+	this={href ? 'a' : 'button'}
+	{...rest}
+	data-slot="button"
+	type={href ? undefined : type}
+	href={href && !disabled ? href : undefined}
+	aria-disabled={href ? disabled : undefined}
+	role={href && disabled ? 'link' : undefined}
+	tabindex={href && disabled ? -1 : tabindex}
+	class={cn(buttonVariants({ variant, size }), className)}
+	bind:this={ref}
+	onclick={async (e: any) => {
+		onclick?.(e);
+
+		if (type === undefined) return;
+
+		if (onClickPromise) {
+			loading = true;
+
+			await onClickPromise(e);
+			loading = false;
+		}
+	}}
+>
+	{#if type !== undefined && loading}
+		<div class="flex animate-spin place-items-center justify-center">
+			<LoaderCircleIcon class="size-4" />
+		</div>
+		<span class="sr-only">Loading</span>
+	{/if}
+	{@render children?.()}
+</svelte:element>

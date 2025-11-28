@@ -7,12 +7,14 @@
 		field,
 		options,
 		placeholder,
-		label
+		label,
+		disabled = false
 	}: {
 		field: AnyFieldApi;
 		options: { label: string; value: string }[];
 		placeholder: string;
 		label: string;
+		disabled?: boolean;
 	} = $props();
 
 	let selectedLabel = $derived(
@@ -37,8 +39,9 @@
 		name={field.name}
 		value={field.state.value}
 		onValueChange={field.handleChange}
+		{disabled}
 	>
-		<SelectTrigger id={field.name} aria-invalid={isInvalid} class="min-w-[120px]">
+		<SelectTrigger id={field.name} aria-invalid={isInvalid} class="min-w-[120px]" {disabled}>
 			{selectedLabel}
 		</SelectTrigger>
 		<SelectContent>

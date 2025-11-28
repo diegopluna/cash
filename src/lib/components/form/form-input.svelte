@@ -7,12 +7,14 @@
 		field,
 		label,
 		placeholder,
-		maxLength
+		maxLength,
+		disabled = false
 	}: {
 		field: AnyFieldApi;
 		label: string;
 		placeholder?: string;
 		maxLength?: number;
+		disabled?: boolean;
 	} = $props();
 
 	const isInvalid = $derived.by(() => field.state.meta.isTouched && !field.state.meta.isValid);
@@ -33,6 +35,7 @@
 		aria-invalid={isInvalid}
 		autocomplete="off"
 		maxlength={maxLength}
+		{disabled}
 	/>
 	{#if isInvalid}
 		<FieldError {errors} />
