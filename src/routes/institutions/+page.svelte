@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { institutionsCollection } from '$lib/tanstack/db/institutions-collection';
 	import { accountsCollection } from '$lib/tanstack/db/accounts-collection';
-	import { count, eq, useLiveQuery } from '@tanstack/svelte-db';
+	import { count, eq, sum, useLiveQuery } from '@tanstack/svelte-db';
 	import { createColumns, defaultHiddenColumns, type InstitutionWithCount } from './columns';
 	import DataTable from '$lib/components/data-table/data-table.svelte';
 	import InstitutionsForm from './institutions-form.svelte';
@@ -15,22 +15,24 @@
 	import { goto } from '$app/navigation';
 
 	const query = useLiveQuery((q) => {
-		const accountCounts = q
+		const accountAggregates = q
 			.from({ account: accountsCollection })
 			.groupBy(({ account }) => account.institutionId)
 			.select(({ account }) => ({
 				institutionId: account.institutionId,
-				accountCount: count(account)
+				accountCount: count(account),
+				totalBalanceCents: sum(account.currentBalanceCents)
 			}));
 
 		return q
 			.from({ institution: institutionsCollection })
-			.leftJoin({ accountCount: accountCounts }, ({ institution, accountCount }) =>
-				eq(institution.id, accountCount.institutionId)
+			.leftJoin({ agg: accountAggregates }, ({ institution, agg }) =>
+				eq(institution.id, agg.institutionId)
 			)
-			.select(({ institution, accountCount }) => ({
+			.select(({ institution, agg }) => ({
 				...institution,
-				accountCount: accountCount?.accountCount ?? 0
+				accountCount: agg?.accountCount ?? 0,
+				totalBalance: agg?.totalBalanceCents ?? 0
 			}));
 	});
 

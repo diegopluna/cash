@@ -9,10 +9,12 @@ import CellCountry from './cell-country.svelte';
 import CellAccountCount from './cell-account-count.svelte';
 import CellName from './cell-name.svelte';
 import { Link } from '$lib/components/ui/link';
+import { formatMoney} from '$lib/utils';
 
 // Extended type with account count from join
 export type InstitutionWithCount = Institution & {
 	accountCount: number;
+	totalBalance: number;
 };
 
 export type ColumnCallbacks = {
@@ -99,6 +101,17 @@ export function createColumns(callbacks: ColumnCallbacks): ColumnDef<Institution
 				return renderComponent(CellAccountCount, { count: row.original.accountCount });
 			},
 			accessorKey: 'accountCount'
+		},
+		{
+			id: 'totalBalance',
+			header: ({ column }) => renderComponent(DataTableColumnHeader, {
+				title: 'Total Balance',
+				column
+			}),
+			accessorKey: 'totalBalance',
+			cell: ({ row }) => {
+				return formatMoney(row.original.totalBalance ?? 0);
+			},
 		},
 		{
 			id: 'slug',

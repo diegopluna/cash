@@ -69,3 +69,14 @@ export function toCents(amount: number): number {
 export function fromCents(cents: number): number {
 	return cents / 100;
 }
+
+export function formatMoney(
+  cents: number,
+  currency: string = 'BRL',
+  locale: string = 'pt-BR'
+): string {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency
+  }).format(fromCents(cents));
+}
