@@ -12,6 +12,7 @@ import CellParent from './cell-parent.svelte';
 // Extended type with parent name from join
 export type CategoryWithParent = Category & {
 	parentName: string | null;
+	parentId: string | null;
 };
 
 export type ColumnCallbacks = {
@@ -80,7 +81,7 @@ export function createColumns(callbacks: ColumnCallbacks): ColumnDef<CategoryWit
 					column
 				}),
 			cell: ({ row }) => {
-				return renderComponent(CellParent, { parentName: row.original.parentName });
+				return renderComponent(CellParent, { parentName: row.original.parentName, parentId: row.original.parentId });
 			},
 			accessorKey: 'parentName'
 		},

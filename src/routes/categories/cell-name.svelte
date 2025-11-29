@@ -15,7 +15,7 @@
 	const displayIcon = $derived(icon ?? '📁');
 </script>
 
-<a class="flex items-center gap-2.5 hover:underline" href={`/categories/${id}`}>
+<a class="flex items-center gap-2.5" href={`/categories/${id}`}>
 	{#if color}
 		<div
 			class="flex h-6 w-6 shrink-0 items-center justify-center rounded text-sm"
@@ -30,5 +30,5 @@
 			{displayIcon}
 		</div>
 	{/if}
-	<span class="font-medium">{name}</span>
+	<span class="font-medium hover:underline">{name}</span>
 </a>

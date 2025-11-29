@@ -67,7 +67,7 @@
 			type: 'expense' as 'income' | 'expense' | 'other',
 			parentId: null as string | null,
 			icon: '',
-			color: '',
+			color: '#C1C1C1',
 			isSystem: false
 		},
 		onSubmit: async ({ value }) => {
@@ -116,7 +116,7 @@
 			form.setFieldValue('type', category?.type ?? 'expense');
 			form.setFieldValue('parentId', category?.parentId ?? null);
 			form.setFieldValue('icon', category?.icon ?? '');
-			form.setFieldValue('color', category?.color ?? '');
+			form.setFieldValue('color', category?.color ?? '#C1C1C1');
 			form.setFieldValue('isSystem', category?.isSystem ?? false);
 		}
 

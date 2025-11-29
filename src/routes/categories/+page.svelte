@@ -24,7 +24,8 @@
 			)
 			.select(({ category, parent }) => ({
 				...category,
-				parentName: parent?.name ?? null
+				parentName: parent?.name ?? null,
+				parentId: parent?.id ?? null
 			}));
 	});
 

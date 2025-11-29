@@ -16,10 +16,10 @@
 	<ColorPicker
 		hex={field.state.value}
 		onInput={(e) => field.handleChange(e.hex)}
-		--cp-bg-color="#333"
-		--cp-border-color="white"
-		--cp-text-color="white"
-		--cp-input-color="#555"
-		--cp-button-hover-color="#777"
+		textInputModes={['hex']}
+		--cp-bg-color="#121212"
+		--cp-border-color="#222222"
+		--cp-text-color="#c1c1c1"
+		--cp-input-color="#222222"
 	/>
 </Field>
