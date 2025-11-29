@@ -37,6 +37,7 @@
 		"drizzle-seed": "^0.3.1",
 		"drizzle-zod": "^0.8.3",
 		"lucide-svelte": "^0.554.0",
+		"neverthrow": "^8.2.0",
 		"runed": "^0.36.0",
 		"svelte-toolbelt": "^0.10.6",
 		"uuidv7": "^1.0.2"
