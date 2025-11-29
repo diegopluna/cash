@@ -20,6 +20,7 @@
 	import { categoriesCollection } from '$lib/tanstack/db/categories-collection';
 	import { useLiveQuery } from '@tanstack/svelte-db';
 	import { z } from 'zod';
+	import FormColorPicker from '$lib/components/form/form-color-picker.svelte';
 
 	let {
 		open = $bindable(false),
@@ -207,13 +208,9 @@
 
 					<form.Field name="color">
 						{#snippet children(field)}
-							<FormInput {field} label="Color" placeholder="#4F46E5" />
+							<FormColorPicker {field} label="Color" />
 						{/snippet}
 					</form.Field>
-
-					<FieldDescription class="text-xs">
-						Choose an emoji for the icon and a hex color code for the color
-					</FieldDescription>
 				</FieldSet>
 
 				{#if isSystemCategory}
