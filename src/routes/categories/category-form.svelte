@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { createForm } from '@tanstack/svelte-form';
 	import { categoriesInsertSchema, categoryTypeConfig, type Category } from './schema';
 	import {
@@ -38,9 +39,9 @@
 
 	// Get all categories for parent select (excluding the current category if editing)
 	const categoriesQuery = useLiveQuery((q) => q.from({ categories: categoriesCollection }));
+	const categoriesData = $derived(categoriesQuery.data ?? []);
 	const parentOptions = $derived.by(() => {
-		const categories = categoriesQuery.data ?? [];
-		return categories
+		return categoriesData
 			.filter((c) => c.id !== category?.id) // Exclude self
 			.map((c) => ({
 				value: c.id,
@@ -89,6 +90,23 @@
 			category = undefined;
 		}
 	}));
+
+	// When a parent is selected, lock the type to match the parent's type
+	const selectedParentId = form.useStore((state) => state.values.parentId);
+	const selectedParent = $derived(
+		selectedParentId.current ? categoriesData.find((c) => c.id === selectedParentId.current) : null
+	);
+	const isTypeLocked = $derived(!!selectedParent);
+
+	// Sync type with parent's type when parent is selected
+	$effect(() => {
+		const parent = selectedParent;
+		if (parent) {
+			untrack(() => {
+				form.setFieldValue('type', parent.type);
+			});
+		}
+	});
 
 	$effect.pre(() => {
 		if (open && !wasOpen) {
@@ -175,7 +193,7 @@
 								placeholder="Select type"
 								label="Type"
 								options={typeOptions}
-								disabled={isSystemCategory}
+								disabled={isSystemCategory || isTypeLocked}
 							/>
 						{/snippet}
 					</form.Field>
