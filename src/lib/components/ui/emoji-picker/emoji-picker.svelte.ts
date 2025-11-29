@@ -1,8 +1,8 @@
-import data, { type EmojiMartData } from "@emoji-mart/data";
-import type { EmojiPickerSkin, SelectedEmoji } from "./types";
-import type { ReadableBoxedValues, WritableBoxedValues } from "svelte-toolbelt";
-import { UseFrecency } from "$lib/hooks/use-frecency";
-import { Context, watch } from "runed";
+import { Context, watch } from 'runed';
+import type { ReadableBoxedValues, WritableBoxedValues } from 'svelte-toolbelt';
+import type { EmojiPickerSkin, SelectedEmoji } from './types';
+import data, { type EmojiMartData } from '@emoji-mart/data';
+import { UseFrecency } from '$lib/hooks/use-frecency.svelte';
 
 const emojiData = data as EmojiMartData;
 
@@ -29,10 +29,10 @@ type EmojiPickerRootProps = WritableBoxedValues<{
 	}>;
 
 class EmojiPickerRootState {
-  emojiPickerState = $state(defaultState);
+	emojiPickerState = $state(defaultState);
 	frecency: UseFrecency | null;
 
-  constructor(readonly opts: EmojiPickerRootProps) {
+	constructor(readonly opts: EmojiPickerRootProps) {
 		this.select = this.select.bind(this);
 		this.onValueChange = this.onValueChange.bind(this);
 
@@ -50,7 +50,7 @@ class EmojiPickerRootState {
 		}
 	}
 
-  select(emoji: string) {
+	select(emoji: string) {
 		const { name, skin } = parseValue(emoji);
 
 		const selected = {
@@ -64,7 +64,7 @@ class EmojiPickerRootState {
 		this.opts.onSelect.current(selected);
 	}
 
-  onValueChange(value: string) {
+	onValueChange(value: string) {
 		if (value === '') {
 			this.emojiPickerState.active = null;
 			return;
@@ -227,4 +227,4 @@ export function useEmojiPickerFooter() {
 
 export function useEmojiPickerSkinToneSelector(props: EmojiPickerSkinProps) {
 	return new EmojiPickerSkinToneSelectorState(ctx.get(), props);
-}
+}	

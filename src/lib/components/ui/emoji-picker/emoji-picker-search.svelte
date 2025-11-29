@@ -1,33 +1,30 @@
 <script lang="ts">
+	import SearchIcon from '@lucide/svelte/icons/search';
+	import { Command as CommandPrimitive } from 'bits-ui';
+	import type { EmojiPickerSearchProps } from './types';
+	import { useEmojiPickerInput } from './emoji-picker.svelte.js';
 	import { box } from 'svelte-toolbelt';
-	import { useEmojiPickerSkinToneSelector } from './emoji-picker.svelte.js';
-	import type { EmojiPickerSkinProps } from './types.js';
-	import { Button, type ButtonElementProps } from '$lib/components/ui/button';
-	import { cn } from '$lib/utils.js';
 
-	let {
-		previewEmoji = '👋',
-		variant = 'outline',
-		size = 'icon',
-		class: className,
-		onclick,
-		...rest
-	}: EmojiPickerSkinProps = $props();
+	let { value = $bindable(''), placeholder = 'Search', ...rest }: EmojiPickerSearchProps = $props();
 
-	const skinState = useEmojiPickerSkinToneSelector({
-		previewEmoji: box.with(() => previewEmoji)
+	useEmojiPickerInput({
+		value: box.with(
+			() => value,
+			(v) => (value = v)
+		)
 	});
 </script>
 
-<Button
-	{...rest}
-	{variant}
-	{size}
-	class={cn('size-8', className)}
-	onclick={(e: Parameters<NonNullable<ButtonElementProps['onclick']>>[0]) => {
-		onclick?.(e);
-		skinState.cycleSkinTone();
-	}}
->
-	{skinState.preview}
-</Button>
+<div class="p-2">
+	<div
+		class="flex h-9 items-center gap-2 rounded-md border border-input bg-input px-3 dark:bg-input/30"
+	>
+		<SearchIcon class="size-4 shrink-0 opacity-50" />
+		<CommandPrimitive.Input
+			{...rest}
+			{placeholder}
+			class={'flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50'}
+			bind:value
+		/>
+	</div>
+</div>

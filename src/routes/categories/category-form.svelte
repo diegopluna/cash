@@ -14,6 +14,7 @@
 	import { Plus } from 'lucide-svelte';
 	import FormInput from '$lib/components/form/form-input.svelte';
 	import FormSelect from '$lib/components/form/form-select.svelte';
+	import FormEmojiPicker from '$lib/components/form/form-emoji-picker.svelte';
 	import { FieldSet, FieldLegend, FieldDescription } from '$lib/components/ui/field';
 	import { Separator } from '$lib/components/ui/separator';
 	import { categoriesCollection } from '$lib/tanstack/db/categories-collection';
@@ -198,21 +199,20 @@
 					<FieldLegend>Appearance</FieldLegend>
 					<FieldDescription>Customize how this category appears</FieldDescription>
 
-					<div class="grid grid-cols-2 gap-4">
-						<form.Field name="icon">
-							{#snippet children(field)}
-								<FormInput {field} label="Icon" placeholder="📁" />
-							{/snippet}
-						</form.Field>
+					<form.Field name="icon">
+						{#snippet children(field)}
+							<FormEmojiPicker {field} label="Icon" placeholder="Select icon" />
+						{/snippet}
+					</form.Field>
 
-						<form.Field name="color">
-							{#snippet children(field)}
-								<FormInput {field} label="Color" placeholder="#4F46E5" />
-							{/snippet}
-						</form.Field>
-					</div>
+					<form.Field name="color">
+						{#snippet children(field)}
+							<FormInput {field} label="Color" placeholder="#4F46E5" />
+						{/snippet}
+					</form.Field>
+
 					<FieldDescription class="text-xs">
-						Use an emoji for the icon and a hex color code for the color
+						Choose an emoji for the icon and a hex color code for the color
 					</FieldDescription>
 				</FieldSet>
 
